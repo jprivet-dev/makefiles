@@ -7,6 +7,9 @@
 # $ make do_you_want
 # Do you want? [y/N]: y
 # Yes, I do!
+#
+# $ make do_you_want no_interaction="true"
+# Yes, I do!
 
 # Colors
 F_RESET = "\\033[0m"
@@ -47,6 +50,7 @@ confirm: ## Display a confirmation before executing a makefile command. Example:
 	@$(eval no ?=)				# Makefile command to execute on no
 	@$(eval no_interaction ?=)	# Do not ask any interactive question
 	@\
+	question=$${question:-"Confirm?"}; \
 	if [ "$${no_interaction}" != "true" ]; then \
 		echo -n "$(C_GREEN)$${question}$(F_RESET) [$(C_YELLOW)y/N$(F_RESET)]: "; \
 		read answer; \
