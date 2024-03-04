@@ -32,17 +32,27 @@ yes_i_do: ## Yes, I do!
 no_i_don_t: ## No, I don't!
 	@echo "$(C_RED)No, I don't!$(F_RESET)"
 
+##
+
+.PHONY: do_you_want_no_interaction
+do_you_want_no_interaction: ## Do you want? (no interaction)
+	@$(MAKE_S) do_you_want no_interaction="true"
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
 confirm: ## Display a confirmation before executing a makefile command. Example: @$(MAKE_S) confirm question="Are you sure" yes="command_yes" no="command_no"
-	@$(eval question ?=)
-	@$(eval yes ?=)
-	@$(eval no ?=)
-	@echo -n "$(C_GREEN)$${question}$(F_RESET) [$(C_YELLOW)y/N$(F_RESET)]: "; \
-	read answer && answer=$${answer:-N}; \
-	if [ $${answer} = y ] || [ $${answer} = Y ]; then \
+	@$(eval question ?=) 		# Question to display
+	@$(eval yes ?=)				# Makefile command to execute on yes
+	@$(eval no ?=)				# Makefile command to execute on no
+	@$(eval no_interaction ?=)	# Do not ask any interactive question
+	@\
+	if [ "$${no_interaction}" != "true" ]; then \
+		echo -n "$(C_GREEN)$${question}$(F_RESET) [$(C_YELLOW)y/N$(F_RESET)]: "; \
+		read answer; \
+	fi; \
+	answer=$${answer:-N}; \
+	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
 		[ -z "$$yes" ] && echo "$(C_YELLOW)(YES) no action!$(F_RESET)" || $(MAKE_S) $$yes; \
 	else \
 		[ -z "$$no" ] && echo "$(C_YELLOW)(NO) no action!$(F_RESET)" || $(MAKE_S) $$no; \
