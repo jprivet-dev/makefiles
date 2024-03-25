@@ -11,53 +11,53 @@
 # $ make do_you_want no_interaction="true"
 # Yes, I do!
 
+#
 # Colors
-F_RESET = "\\033[0m"
-C_RED = "\\033[31m"
-C_GREEN = "\\033[32m"
-C_YELLOW = "\\033[33m"
-C_BLUE = "\\033[34m"
+#
 
-# Makefile
-MAKE_S = make -s
+RESET = "\\033[0m"
+BLUE = "\\033[34m"
+GREEN = "\\033[32m"
+RED = "\\033[31m"
+YELLOW = "\\033[33m"
 
 ## — PROJECT 🚀 ———————————————————————————————————————————————————————————————
 
 .PHONY: do_you_want
 do_you_want: ## Do you want?
-	@$(MAKE_S) confirm question="Do you want?" yes="yes_i_do" no="no_i_don_t"
+	@make -s confirm question="Do you want?" yes="yes_i_do" no="no_i_don_t"
 
 .PHONY: yes_i_do
 yes_i_do: ## Yes, I do!
-	@echo "$(C_BLUE)Yes, I do!$(F_RESET)"
+	@echo "$(BLUE)Yes, I do!$(RESET)"
 
 .PHONY: no_i_don_t
 no_i_don_t: ## No, I don't!
-	@echo "$(C_RED)No, I don't!$(F_RESET)"
+	@echo "$(RED)No, I don't!$(RESET)"
 
 ##
 
 .PHONY: do_you_want_no_interaction
 do_you_want_no_interaction: ## Do you want? (no interaction)
-	@$(MAKE_S) do_you_want no_interaction="true"
+	@make -s do_you_want no_interaction="true"
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
-confirm: ## Display a confirmation before executing a makefile command. Example: @$(MAKE_S) confirm question="Are you sure" yes="command_yes" no="command_no"
-	@$(eval question ?=) 		# Question to display
-	@$(eval yes ?=)				# Makefile command to execute on yes
-	@$(eval no ?=)				# Makefile command to execute on no
-	@$(eval no_interaction ?=)	# Do not ask any interactive question
+confirm: ## Display a confirmation before executing a makefile command. Example: @make -s confirm question="Are you sure" yes="command_yes" no="command_no"
+	@$(eval question ?=)        # Question to display
+	@$(eval yes ?=)             # Makefile commands to execute on yes
+	@$(eval no ?=)              # Makefile commands to execute on no
+	@$(eval no_interaction ?=)  # Do not ask any interactive question
 	@\
 	question=$${question:-"Confirm?"}; \
 	if [ "$${no_interaction}" != "true" ]; then \
-		echo -n "$(C_GREEN)$${question}$(F_RESET) [$(C_YELLOW)y/N$(F_RESET)]: "; \
+		echo -n "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
 		read answer; \
 	fi; \
 	answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
-		[ -z "$$yes" ] && echo "$(C_YELLOW)(YES) no action!$(F_RESET)" || $(MAKE_S) $$yes; \
+		[ -z "$$yes" ] && echo "$(YELLOW)(YES) no action!$(RESET)" || make -s $$yes; \
 	else \
-		[ -z "$$no" ] && echo "$(C_YELLOW)(NO) no action!$(F_RESET)" || $(MAKE_S) $$no; \
+		[ -z "$$no" ] && echo "$(YELLOW)(NO) no action!$(RESET)" || make -s $$no; \
 	fi
