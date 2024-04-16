@@ -6,10 +6,21 @@ Collection of useful makefiles and commands, with Docker, Symfony, PHP, Composer
 
 ## Installation
 
+1. Clone the project:
+
 ```shell
 git clone git@github.com:jprivet-dev/makefiles.git
 cd makefiles
 ```
+
+2. And choose one of the use cases. For example:
+
+```shell
+cd php-docker
+make # print help
+```
+
+![php-docker-help.png](docs%2Fphp-docker-help.png)
 
 ## Cheat sheet
 
@@ -17,16 +28,19 @@ cd makefiles
 
 ```
 # Comments are preceded by the hash symbol
+.PHONY: target
 target: dependencies
-    command 1
-    command 2
+    command_1
+    command_2
     ...
-    command n
+    command_n
 ```
 
 ## Resources
 
 - https://www.hpc2n.umu.se/documentation/compilers/makefiles
+- https://stackoverflow.com/questions/2145590/what-is-the-purpose-of-phony-in-a-makefile
+- https://emojipedia.org/
 
 ## Comments, suggestions?
 
