@@ -98,19 +98,11 @@ dc_logs: ## See the container’s logs
 ##
 
 .PHONY: docker_stop_all
-docker_stop_all: ## Stop all running containers [y/N]
-	@make -s confirm question="Stop all running containers?" yes="__docker_stop_all"
-
-.PHONY: __docker_stop_all
-__docker_stop_all: # Stop all running containers
+docker_stop_all: confirm_continue ## Stop all running containers [y/N]
 	docker stop $$(docker ps -a -q)
 
 .PHONY: docker_remove_all
-docker_remove_all: ## Remove all stopped containers [y/N]
-	@make -s confirm question="Remove all stopped containers?" yes="__docker_remove_all"
-
-.PHONY: __docker_remove_all
-__docker_remove_all: # Remove all stopped containers
+docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 	docker rm $$(docker ps -a -q)
 
 ## — PHP 🐘 ———————————————————————————————————————————————————————————————————
@@ -141,3 +133,17 @@ vars: ## Show variables
 	@echo "LOCAL_PHP     : $(LOCAL_PHP)"
 	@echo "DOCKER_COMPOSE: $(DOCKER_COMPOSE)"
 	@echo "PHP           : $(PHP)"
+
+.PHONY: colors
+colors: ## Show colors
+	@echo "Part of $(BLUE)the sentence in blue$(RESET), then reset."
+	@echo "Part of $(GREEN)the sentence in green$(RESET), then reset."
+	@echo "Part of $(RED)the sentence in red$(RESET), then reset."
+	@echo "Part of $(YELLOW)the sentence in yellow$(RESET), then reset."
+	@echo "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset."
+
+## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
+
+PHONY: confirm_continue
+confirm_continue: ## Display a confirmation before continuing [y/N]
+	@echo -n "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
