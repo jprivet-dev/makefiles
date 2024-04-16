@@ -1,5 +1,5 @@
 #
-# Executables (local)
+# EXECUTABLES (LOCAL)
 #
 
 COMPOSE_V1 := $(shell docker-compose version 2> /dev/null)
@@ -21,7 +21,7 @@ endif
 PHP = $(CONTAINER_PHP) php
 
 #
-# Colors
+# COLORS
 #
 
 RESET = "\\033[0m"

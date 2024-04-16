@@ -1,4 +1,4 @@
-# Usage:
+# USAGE
 #
 # $ make do_you_want
 # Do you want? [y/N]:
@@ -12,7 +12,7 @@
 # Yes, I do!
 
 #
-# Colors
+# COLORS
 #
 
 RESET = "\\033[0m"

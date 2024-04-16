@@ -1,5 +1,5 @@
 #
-# Colors
+# COLORS
 #
 
 RESET = "\\033[0m"
