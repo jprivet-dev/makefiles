@@ -20,6 +20,7 @@ BLUE = "\\033[34m"
 GREEN = "\\033[32m"
 RED = "\\033[31m"
 YELLOW = "\\033[33m"
+UNDERLINE = "\\033[4m"
 
 ## — 🎵 🚀 THE CONFIRM MAKEFILE 🚀 🎵 —————————————————————————————————————————
 
@@ -66,11 +67,11 @@ _internal_no_i_don_t: # No, I don't! INTERNAL
 	@echo "$(RED)No, I don't!$(RESET)"
 
 .PHONY: do_you_want_yes_action
-do_you_want_yes_action: ## Do you want? [y/N]
+do_you_want_yes_action: ## Do you want? ('yes' action) [y/N]
 	@make -s confirm question="Do you want? ('yes' action)" make_yes="_internal_yes_i_do"
 
 .PHONY: do_you_want_no_action
-do_you_want_no_action: ## Do you want? [y/N]
+do_you_want_no_action: ## Do you want? ('no' action) [y/N]
 	@make -s confirm question="Do you want? ('no' action)" make_no="_internal_no_i_don_t"
 
 .PHONY: do_you_want_no_interaction
@@ -79,9 +80,19 @@ do_you_want_no_interaction: ## Do you want? (no interaction)
 
 ##
 
-.PHONY: load_fixtures
-load_fixtures: confirm_purge_database ## Load fixtures [y/N]
-	@echo "$(YELLOW)Fixtures loaded!$(RESET)"
+.PHONY: do_you_want_to_continue
+do_you_want_to_continue: confirm_continue ## Do you want to continue? [y/N]
+	@echo "$(YELLOW)Yes, we continue!$(RESET)"
+
+## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
+
+.PHONY: colors
+colors: ## Show colors
+	@echo "Part of $(BLUE)the sentence in blue$(RESET), then reset."
+	@echo "Part of $(GREEN)the sentence in green$(RESET), then reset."
+	@echo "Part of $(RED)the sentence in red$(RESET), then reset."
+	@echo "Part of $(YELLOW)the sentence in yellow$(RESET), then reset."
+	@echo "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset."
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
@@ -104,6 +115,6 @@ confirm: ## Display a confirmation before executing a makefile command. Example:
 		[ -z "$$make_no" ] && echo "$(YELLOW)(NO) no action!$(RESET)" || make -s $$make_no; \
 	fi
 
-PHONY: confirm_purge_database
-confirm_purge_database: ## Display a confirmation before purge database (yes > continue, no > discard)
-	@echo -n "$(GREEN)Purge the database and load fixtures?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+PHONY: confirm_continue
+confirm_continue: ## Display a confirmation before continuing [y/N]
+	@echo -n "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
