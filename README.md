@@ -2,25 +2,46 @@
 
 ## Presentation
 
-Collection of makefiles and useful commands.
+Collection of useful makefiles and commands, with Docker, Symfony, PHP, Composer, Angular, Node, ...
 
 ## Installation
 
-### 1 - Clone the project
+1. Clone the project:
 
 ```shell
 git clone git@github.com:jprivet-dev/makefiles.git
+cd makefiles
 ```
 
-### 2 - Go in the folder project
+2. And choose one of the use cases. For example:
 
 ```shell
-cd makefiles
+cd php-docker
+make # print help
+```
+
+![php-docker-help.png](docs%2Fphp-docker-help.png)
+
+## Cheat sheet
+
+### Structure
+
+```
+# Comments are preceded by the hash symbol
+.PHONY: target
+target: dependencies
+    command_1
+    command_2
+    ...
+    command_n
 ```
 
 ## Resources
 
-> Look in the various Makefiles.
+- https://github.com/dunglas/symfony-docker/blob/main/docs/makefile.md
+- https://www.hpc2n.umu.se/documentation/compilers/makefiles
+- https://stackoverflow.com/questions/2145590/what-is-the-purpose-of-phony-in-a-makefile
+- https://emojipedia.org/
 
 ## Comments, suggestions?
 
