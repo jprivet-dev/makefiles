@@ -32,35 +32,35 @@ help: ## Print self-documented Makefile
 		}'
 	@echo
 
-## — GROUPE A 🚀 ——————————————————————————————————————————————————————————————
+## — FOO 🚀 ———————————————————————————————————————————————————————————————————
 
-.PHONY: ga_command_1
-ga_command_1: ga_command_2 ## Description of the "Groupe A: command 1"
-	@echo "Groupe A: command 1"
+.PHONY: foo_command_1
+foo_command_1: foo_command_2 ## Description of the "Foo: command 1"
+	@echo "Foo: command 1"
 
-.PHONY: ga_command_2
-ga_command_2: ## Description of the "Groupe A: command 2"
-	@echo "Groupe A: command 2"
+.PHONY: foo_command_2
+foo_command_2: ## Description of the "Foo: command 2"
+	@echo "Foo: command 2"
 
 ##
 
-.PHONY: ga_command_3
-ga_command_3: ## Description of the "Groupe A: command 3"
-	@echo "Groupe A: command 3"
+.PHONY: foo_command_3
+foo_command_3: ## Description of the "Foo: command 3"
+	@echo "Foo: command 3"
 
-.PHONY: ga_command_4
-ga_command_4: ga_command_3 ## Description of the "Groupe A: command 4"
-	@echo "Groupe A: command 4"
+.PHONY: foo_command_4
+foo_command_4: foo_command_3 ## Description of the "Foo: command 4"
+	@echo "Foo: command 4"
 
-## — GROUPE B 🚧‍ ——————————————————————————————————————————————————————————————
+## — BAR 🚧‍ ———————————————————————————————————————————————————————————————————
 
-.PHONY: gb_command_1
-gb_command_1: gb_command_2 ## Description of the "Groupe B: command 1"
-	@echo "Groupe B: command 1"
+.PHONY: bar_command_1
+bar_command_1: bar_command_2 ## Description of the "Bar: command 1"
+	@echo "Bar: command 1"
 
-.PHONY: gb_command_2
-gb_command_2: ## Description of the "Groupe B: command 2"
-	@echo "Groupe B: command 2"
+.PHONY: bar_command_2
+bar_command_2: ## Description of the "Bar: command 2"
+	@echo "Bar: command 2"
 
 #
 # INVISIBLE
