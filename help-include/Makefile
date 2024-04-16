@@ -2,7 +2,7 @@
 # Use `target=command[2];` instead of `target=command[1];`.
 -include .foo
 
-## — 🎵 🐳 THE PROJECT MAKEFILE 🐳 🎵 —————————————————————————————————————————
+## — 🎵 🚀 THE PROJECT MAKEFILE 🚀 🎵 —————————————————————————————————————————
 
 # Print self-documented Makefile:
 # $ make

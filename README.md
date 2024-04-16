@@ -2,25 +2,31 @@
 
 ## Presentation
 
-Collection of makefiles and useful commands.
+Collection of useful makefiles and commands, with Docker, Symfony, PHP, Composer, Angular, Node, ...
 
 ## Installation
 
-### 1 - Clone the project
-
 ```shell
 git clone git@github.com:jprivet-dev/makefiles.git
+cd makefiles
 ```
 
-### 2 - Go in the folder project
+## Cheat sheet
 
-```shell
-cd makefiles
+### Structure
+
+```
+# Comments are preceded by the hash symbol
+target: dependencies
+    command 1
+    command 2
+    ...
+    command n
 ```
 
 ## Resources
 
-> Look in the various Makefiles.
+- https://www.hpc2n.umu.se/documentation/compilers/makefiles
 
 ## Comments, suggestions?
 

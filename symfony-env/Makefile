@@ -4,6 +4,7 @@ BUILT_IN_VARS := $(.VARIABLES)
 # SYMFONY ENVIRONMENT VARIABLES
 #
 
+# Files in order of increasing priority.
 # @see https://www.gnu.org/software/make/manual/html_node/Environment.html
 # @see https://github.com/symfony/recipes/issues/18
 # @see https://symfony.com/doc/current/quick_tour/the_architecture.html#environment-variables
@@ -25,20 +26,20 @@ APP_BAR ?= undefined
 
 FOO = foo
 BAR = bar
-
-## — PROJECT 🚀 ———————————————————————————————————————————————————————————————
-
-.PHONY: app
-app: ## Example
-	@echo "APP_ENV: $(APP_ENV)"
-	@echo "APP_SECRET: $(APP_SECRET)"
+BAZ = $(FOO) bis
 
 ## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
 
+.PHONY: app
+app: ## Show APP_XX variables
+	@echo "APP_ENV: $(APP_ENV)"
+	@echo "APP_SECRET: $(APP_SECRET)"
+
+.DEFAULT_GOAL = vars
 .PHONY: vars
 # @see https://stackoverflow.com/questions/7117978/gnu-make-list-the-values-of-all-variables-or-macros-in-a-particular-run
 vars: ## Show variables (exclude built-in variables)
-    $(foreach v, \
-        $(shell echo "$(filter-out $(BUILT_IN_VARS) BUILT_IN_VARS, $(.VARIABLES))" | tr ' ' '\n' | sort), \
-        $(info $(shell printf "%-20s" "$(v)")= $(value $(v))) \
-    )
+		$(foreach v, \
+			$(shell echo "$(filter-out $(BUILT_IN_VARS) BUILT_IN_VARS, $(.VARIABLES))" | tr ' ' '\n' | sort), \
+			$(info $(shell printf "%-20s" "$(v)")= $(value $(v))) \
+		)
