@@ -38,6 +38,7 @@ target: dependencies
 
 ## Resources
 
+- https://github.com/dunglas/symfony-docker/blob/main/docs/makefile.md
 - https://www.hpc2n.umu.se/documentation/compilers/makefiles
 - https://stackoverflow.com/questions/2145590/what-is-the-purpose-of-phony-in-a-makefile
 - https://emojipedia.org/
