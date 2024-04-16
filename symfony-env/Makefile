@@ -28,6 +28,36 @@ FOO = foo
 BAR = bar
 BAZ = $(FOO) bis
 
+## — 🎵 🛠️ THE ENV MAKEFILE 🛠️ 🎵 —————————————————————————————————————————————
+
+# Print self-documented Makefile:
+# $ make
+# $ make help
+
+.DEFAULT_GOAL = help
+.PHONY: help
+help: ## Print self-documented Makefile
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	| awk 'BEGIN {FS = "## "}; \
+		{ \
+			split($$1, command, ":"); \
+			target=command[1]; \
+			description=$$2; \
+			# --- space --- \
+			if (target=="##") \
+				printf "\033[33m%s\n", ""; \
+			# --- title --- \
+			else if (target=="" && description!="") \
+				printf "\033[33m\n%s\n", description; \
+			# --- command + description --- \
+			else if (target!="" && description!="") \
+				printf "\033[32m  %-30s \033[0m%s\n", target, description; \
+			# --- do nothing --- \
+			else \
+				; \
+		}'
+	@echo
+
 ## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
 
 .PHONY: app
@@ -35,7 +65,6 @@ app: ## Show APP_XX variables
 	@echo "APP_ENV: $(APP_ENV)"
 	@echo "APP_SECRET: $(APP_SECRET)"
 
-.DEFAULT_GOAL = vars
 .PHONY: vars
 # @see https://stackoverflow.com/questions/7117978/gnu-make-list-the-values-of-all-variables-or-macros-in-a-particular-run
 vars: ## Show variables (exclude built-in variables)
