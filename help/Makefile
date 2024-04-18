@@ -31,31 +31,31 @@ help: ## Print self-documented Makefile
 ## — FOO 🚀 ———————————————————————————————————————————————————————————————————
 
 .PHONY: foo_command_1
-foo_command_1: foo_command_2 ## Description of the "Foo: command 1"
+foo_command_1: foo_command_2 ## Short description for foo_command_1
 	@echo "Foo: command 1"
 
 .PHONY: foo_command_2
-foo_command_2: ## Description of the "Foo: command 2"
+foo_command_2: ## Short description for foo_command_2
 	@echo "Foo: command 2"
 
 ##
 
 .PHONY: foo_command_3
-foo_command_3: ## Description of the "Foo: command 3"
+foo_command_3: ## Short description for foo_command_3
 	@echo "Foo: command 3"
 
 .PHONY: foo_command_4
-foo_command_4: foo_command_3 ## Description of the "Foo: command 4"
+foo_command_4: foo_command_3 ## Short description for foo_command_4
 	@echo "Foo: command 4"
 
 ## — BAR 🚧‍ ———————————————————————————————————————————————————————————————————
 
 .PHONY: bar_command_1
-bar_command_1: bar_command_2 ## Description of the "Bar: command 1"
+bar_command_1: bar_command_2 ## Short description for bar_command_1
 	@echo "Bar: command 1"
 
 .PHONY: bar_command_2
-bar_command_2: ## Description of the "Bar: command 2"
+bar_command_2: ## Short description for bar_command_2
 	@echo "Bar: command 2"
 
 #
@@ -63,7 +63,7 @@ bar_command_2: ## Description of the "Bar: command 2"
 #
 
 .PHONY: invisible_command_1
-invisible_command_1: invisible_command_2 # Description of the "Invisible command 1"
+invisible_command_1: invisible_command_2 # Short description for invisible_command_1
 	@echo "Invisible command 1"
 
 .PHONY: invisible_command_2
