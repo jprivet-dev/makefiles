@@ -1,25 +1,12 @@
-# USAGE
-#
-# $ make do_you_want
-# Do you want? [y/N]:
-# No, I don't!
-#
-# $ make do_you_want
-# Do you want? [y/N]: y
-# Yes, I do!
-#
-# $ make do_you_want no_interaction="true"
-# Yes, I do!
-
 #
 # COLORS
 #
 
-RESET = "\\033[0m"
-BLUE = "\\033[34m"
-GREEN = "\\033[32m"
-RED = "\\033[31m"
-YELLOW = "\\033[33m"
+RESET     = "\\033[0m"
+BLUE      = "\\033[34m"
+GREEN     = "\\033[32m"
+RED       = "\\033[31m"
+YELLOW    = "\\033[33m"
 UNDERLINE = "\\033[4m"
 
 ## — 🎵 🚀 THE CONFIRM MAKEFILE 🚀 🎵 —————————————————————————————————————————
