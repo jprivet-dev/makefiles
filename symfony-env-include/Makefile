@@ -17,13 +17,19 @@ FILE_ENV := $(APP_ENV)
 -include .env.$(FILE_ENV).local
 
 ifneq ($(FILE_ENV),$(APP_ENV))
-$(info !!! CAUTION: APP_ENV is overloaded outside .env and .env.local files !!!)
+$(info [WARNING] APP_ENV is overloaded outside .env and .env.local files!)
 endif
 
 ifeq ($(FILE_ENV),prod)
-$(info !!! CAUTION: your are in the PROD environment !!!)
+$(info [WARNING] Your are in the prod environment!)
 else ifeq ($(FILE_ENV),test)
-$(info !!! CAUTION: your are in the TEST environment !!!)
+$(info [WARNING] Your are in the test environment!)
+endif
+
+# @see https://symfony.com/doc/current/deployment.html#b-configure-your-environment-variables
+ifneq ($(wildcard .env.local.php),)
+$(info [WARNING] It is not possible to use variables from .env.local.php file!)
+$(info [WARNING] The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php!)
 endif
 
 #
