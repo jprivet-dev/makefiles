@@ -20,7 +20,9 @@ cp .env.local.dist .env.local
 cp .env.dev.local.dist .env.dev.local
 ```
 
-## Use case 1 (default)
+## Use cases
+
+### 1. Default
 
 | Local files      | Exists |
 |------------------|--------|
@@ -38,7 +40,7 @@ Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=
 * ✓ .env
 ```
 
-## Use case 2 (default bis)
+### 2. Default bis
 
 | Local files      | Exists |
 |------------------|--------|
@@ -61,7 +63,7 @@ Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=
 * ✓ .env
 ```
 
-## Use case 5 (force local dev env)
+### 3. Force local dev env
 
 | Local files      | Exists |
 |------------------|--------|
@@ -89,7 +91,7 @@ Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=
 * ✓ .env
 ```
 
-## Use case 3 (force prod env)
+### 4. Force prod env
 
 | Local files      | Exists |
 |------------------|--------|
@@ -113,7 +115,7 @@ Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=
 * ✓ .env
 ```
 
-## Use case 4 (force test env)
+### 5. Force test env
 
 | Local files      | Exists |
 |------------------|--------|
@@ -134,5 +136,23 @@ Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=
 * ⨯ .env.test.local
 * ✓ .env.test
 * ✓ .env.local
+* ✓ .env
+```
+
+### 6. Exist only `.env`
+
+| Local files      | Exists |
+|------------------|--------|
+| `.env.dev.local` | NO     |
+| `.env.local`     | NO    |
+
+```
+$ make vars env_files 
+APP_ENV   : dev
+APP_SECRET: SECRET_DEFAULT
+Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=dev]
+* ⨯ .env.dev.local
+* ⨯ .env.dev
+* ⨯ .env.local
 * ✓ .env
 ```
