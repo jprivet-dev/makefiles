@@ -1,4 +1,4 @@
-# Symfony env
+# Symfony env include
 
 ## Overriding environment values via `.env.local`
 
@@ -105,7 +105,7 @@ APP_ENV=prod
 
 ```
 $ make vars env_files 
-!!! CAUTION: your are in the PROD env !!!
+!!! CAUTION: your are in the PROD environment !!!
 APP_ENV   : prod
 APP_SECRET: SECRET_PROD
 Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=prod]
@@ -129,7 +129,7 @@ APP_ENV=test
 
 ```
 $ make vars env_files 
-!!! CAUTION: your are in the TEST env !!!
+!!! CAUTION: your are in the TEST environment !!!
 APP_ENV   : test
 APP_SECRET: SECRET_TEST
 Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=test]

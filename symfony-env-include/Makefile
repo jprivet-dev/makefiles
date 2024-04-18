@@ -21,9 +21,9 @@ $(info !!! CAUTION: APP_ENV is overloaded outside .env and .env.local files !!!)
 endif
 
 ifeq ($(FILE_ENV),prod)
-$(info !!! CAUTION: your are in the PROD env !!!)
+$(info !!! CAUTION: your are in the PROD environment !!!)
 else ifeq ($(FILE_ENV),test)
-$(info !!! CAUTION: your are in the TEST env !!!)
+$(info !!! CAUTION: your are in the TEST environment !!!)
 endif
 
 #
