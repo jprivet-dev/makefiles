@@ -16,7 +16,7 @@ cd makefiles
 2. And choose one of the use cases. For example:
 
 ```shell
-cd php-docker
+cd php-local-compose-v1-v2
 make # print help
 ```
 
@@ -34,6 +34,22 @@ target: dependencies
     command_2
     ...
     command_n
+```
+
+## Technical choices
+
+### snack_case vs kebab-case
+
+I prefer to use the snack_case format for Makefile commands, as it's easier to select an entire command with a double-click (IDE, text editor, terminal, ...), unlike the kebab-case format.
+
+```makefile
+.PHONY: my_target_a
+my_target_a: dependencies
+```
+
+```makefile
+.PHONY: my-target-a
+my-target-a: dependencies
 ```
 
 ## Resources
