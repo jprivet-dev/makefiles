@@ -71,20 +71,10 @@ do_you_want_no_interaction: ## Do you want? (no interaction)
 do_you_want_to_continue: confirm_continue ## Do you want to continue? [y/N]
 	@echo "$(YELLOW)Yes, we continue!$(RESET)"
 
-## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
-
-.PHONY: colors
-colors: ## Show colors
-	@echo "Part of $(BLUE)the sentence in blue$(RESET), then reset."
-	@echo "Part of $(GREEN)the sentence in green$(RESET), then reset."
-	@echo "Part of $(RED)the sentence in red$(RESET), then reset."
-	@echo "Part of $(YELLOW)the sentence in yellow$(RESET), then reset."
-	@echo "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset."
-
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
-confirm: ## Display a confirmation before executing a makefile command. Example: @make -s confirm question="Are you sure" make_yes="my_command_on_yes" make_no="my_command_on_no"
+confirm: ## Display a confirmation before executing a makefile command. Example: @make -s confirm question="Are you sure?" make_yes="my_command_on_yes" make_no="my_command_on_no"
 	@$(eval question ?=)        # Question to display
 	@$(eval make_yes ?=)        # Makefile commands to execute on yes
 	@$(eval make_no ?=)         # Makefile commands to execute on no
