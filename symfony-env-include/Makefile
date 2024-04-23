@@ -3,6 +3,7 @@
 #
 
 # Files in order of increasing priority.
+# @see https://github.com/jprivet-dev/makefiles/tree/main/symfony-env-include
 # @see https://www.gnu.org/software/make/manual/html_node/Environment.html
 # @see https://github.com/symfony/recipes/issues/18
 # @see https://symfony.com/doc/current/quick_tour/the_architecture.html#environment-variables
@@ -17,19 +18,19 @@ FILE_ENV := $(APP_ENV)
 -include .env.$(FILE_ENV).local
 
 ifneq ($(FILE_ENV),$(APP_ENV))
-$(info [WARNING] APP_ENV is overloaded outside .env and .env.local files!)
+$(info Warning: APP_ENV is overloaded outside .env and .env.local files.)
 endif
 
 ifeq ($(FILE_ENV),prod)
-$(info [WARNING] Your are in the prod environment!)
+$(info Warning: Your are in the prod environment.)
 else ifeq ($(FILE_ENV),test)
-$(info [WARNING] Your are in the test environment!)
+$(info Warning: Your are in the test environment.)
 endif
 
 # @see https://symfony.com/doc/current/deployment.html#b-configure-your-environment-variables
 ifneq ($(wildcard .env.local.php),)
-$(info [WARNING] It is not possible to use variables from .env.local.php file!)
-$(info [WARNING] The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php!)
+$(info Warning: It is not possible to use variables from .env.local.php file.)
+$(info Warning: The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php.)
 endif
 
 #
