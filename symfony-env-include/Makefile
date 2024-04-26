@@ -18,19 +18,19 @@ FILE_ENV := $(APP_ENV)
 -include .env.$(FILE_ENV).local
 
 ifneq ($(FILE_ENV),$(APP_ENV))
-$(info Warning: APP_ENV is overloaded outside .env and .env.local files.)
+$(info Warning: APP_ENV is overloaded outside .env and .env.local files)
 endif
 
 ifeq ($(FILE_ENV),prod)
-$(info Warning: Your are in the prod environment.)
+$(info Warning: Your are in the prod environment)
 else ifeq ($(FILE_ENV),test)
-$(info Warning: Your are in the test environment.)
+$(info Warning: Your are in the test environment)
 endif
 
 # @see https://symfony.com/doc/current/deployment.html#b-configure-your-environment-variables
 ifneq ($(wildcard .env.local.php),)
-$(info Warning: It is not possible to use variables from .env.local.php file.)
-$(info Warning: The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php.)
+$(info Warning: It is not possible to use variables from .env.local.php file)
+$(info Warning: The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php)
 endif
 
 #
@@ -78,12 +78,13 @@ help: ## Print self-documented Makefile
 
 .PHONY: vars
 vars: ## Show variables
+	@echo "$(YELLOW)Vars:$(RESET)"
 	@echo "APP_ENV   : $(APP_ENV)"
 	@echo "APP_SECRET: $(APP_SECRET)"
 
 .PHONY: env_files
 env_files: ## Show env files loaded into that Makefile
-	@echo "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]$(RESET)"
+	@echo "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(RESET)"
 ifneq ("$(wildcard .env.$(FILE_ENV).local)","")
 	@echo "* $(GREEN)✓$(RESET) .env.$(FILE_ENV).local"
 else

@@ -60,7 +60,7 @@ versions: composer_version ## Display all versions of the libraries available in
 ## — COMPOSER 🧙 ——————————————————————————————————————————————————————————————
 
 .PHONY: composer
-composer: ## Run composer. Pass the parameter with "p=" (example: make composer p="require --dev phpunit/phpunit")
+composer: ## Run composer. Pass the parameters with "p=" (example: make composer p="require --dev phpunit/phpunit")
 	@$(eval p ?=)
 	$(COMPOSER) $(p)
 
@@ -97,7 +97,7 @@ composer_update@prod: ## Update packages using composer (PROD)
 
 composer.lock: composer.json ## Check if the composer.lock is up to date with the latest changes in composer.json (run 'composer update') [y/N]
 	@echo "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)"
-	@make -s confirm question="Run 'composer update'?" make_yes="composer_update"
+	@$(MAKE) -s confirm question="Run 'composer update'?" make_yes="composer_update"
 
 vendor: composer.json ## Check if vendor is up to date with the latest changes in composer.json (run 'composer install')
 	@echo "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)"
@@ -106,11 +106,11 @@ vendor: composer.json ## Check if vendor is up to date with the latest changes i
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
-confirm: ## Display a confirmation before executing a makefile command. Example: @make -s confirm question="Are you sure?" make_yes="my_command_on_yes" make_no="my_command_on_no"
-	@$(eval question ?=)        # Question to display
-	@$(eval make_yes ?=)        # Makefile commands to execute on yes
-	@$(eval make_no ?=)         # Makefile commands to execute on no
-	@$(eval no_interaction ?=)  # Do not ask any interactive question
+confirm: ## Display a confirmation before executing a makefile command. Example: @$(MAKE) -s confirm question="Are you sure?" make_yes="my_command_on_yes" make_no="my_command_on_no"
+	@$(if $(question),, $(error question argument is required))   # Question to display
+	@$(eval make_yes ?=)                                          # Makefile commands to execute on yes
+	@$(eval make_no ?=)                                           # Makefile commands to execute on no
+	@$(eval no_interaction ?=)                                    # Do not ask any interactive question
 	@\
 	question=$${question:-"Confirm?"}; \
 	if [ "$${no_interaction}" != "true" ]; then \
@@ -119,9 +119,9 @@ confirm: ## Display a confirmation before executing a makefile command. Example:
 	fi; \
 	answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
-		[ -z "$$make_yes" ] && echo "$(YELLOW)(YES) no action!$(RESET)" || make -s $$make_yes; \
+		[ -z "$$make_yes" ] && echo "$(YELLOW)(YES) no action!$(RESET)" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && echo "$(YELLOW)(NO) no action!$(RESET)" || make -s $$make_no; \
+		[ -z "$$make_no" ] && echo "$(YELLOW)(NO) no action!$(RESET)" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue

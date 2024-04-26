@@ -16,7 +16,7 @@ ifdef DOCKER_COMPOSE
 	EXEC          = $(DOCKER_COMPOSE) exec
 	CONTAINER_PHP = $(EXEC) php
 else ifndef LOCAL_PHP
-$(error No dockerized or local PHP interpreter.)
+$(error No dockerized or local PHP interpreter)
 endif
 
 PHP = $(CONTAINER_PHP) php
@@ -109,7 +109,7 @@ docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 ## — PHP 🐘 ———————————————————————————————————————————————————————————————————
 
 .PHONY: php
-php: ## Run PHP. Pass the parameter with "p=" (example: make php p="--help")
+php: ## Run PHP. Pass the parameters with "p=" (example: make php p="--help")
 	@$(eval p ?=)
 	$(PHP) $(p)
 
@@ -129,6 +129,7 @@ php_modules: ## Show compiled in modules
 
 .PHONY: vars
 vars: ## Show variables
+	@echo "$(YELLOW)Vars:$(RESET)"
 	@echo "COMPOSE_V1    : $(COMPOSE_V1)"
 	@echo "COMPOSE_V2    : $(COMPOSE_V2)"
 	@echo "LOCAL_PHP     : $(LOCAL_PHP)"

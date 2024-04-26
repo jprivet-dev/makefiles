@@ -5,7 +5,7 @@
 COMPOSE_V2 := $(shell docker compose version 2> /dev/null)
 
 ifndef COMPOSE_V2
-$(error Docker Compose CLI plugin is required but is not available on your system.)
+$(error Docker Compose CLI plugin is required but is not available on your system)
 endif
 
 EXEC          = docker compose exec
@@ -100,7 +100,7 @@ docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 ## — PHP 🐘 ———————————————————————————————————————————————————————————————————
 
 .PHONY: php
-php: ## Run PHP. Pass the parameter with "p=" (example: make php p="--help")
+php: ## Run PHP. Pass the parameters with "p=" (example: make php p="--help")
 	@$(eval p ?=)
 	$(PHP) $(p)
 
@@ -120,6 +120,7 @@ php_modules: ## Show compiled in modules
 
 .PHONY: vars
 vars: ## Show variables
+	@echo "$(YELLOW)Vars:$(RESET)"
 	@echo "COMPOSE_V2   : $(COMPOSE_V2)"
 	@echo "EXEC         : $(EXEC)"
 	@echo "CONTAINER_PHP: $(CONTAINER_PHP)"
