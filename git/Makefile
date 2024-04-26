@@ -60,11 +60,6 @@ help: ## Print self-documented Makefile
 .PHONY: versions
 versions: gh_version git_version ## Display all versions of the libraries used in this Makefile
 
-.PHONY: action_if_branch_exists
-action_if_branch_exists: git_exists ## Display all versions of the libraries used in this Makefile
-		echo "$(GREEN)Action done.$(RESET)"
-
-
 ## — GITHUB CLI 👾 ————————————————————————————————————————————————————————————
 
 .PHONY: gh_version
@@ -93,12 +88,6 @@ ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
 else
 	@echo "$(GREEN)✓$(RESET) The $(branch) branch exists."
 endif
-
-.PHONY: hello_3
-hello_3: ## Pass the name with "name=" (example: make hello_3 name=Michel)
-	@name=$${name:-"World"}; \
-	echo "$(GREEN)(3) Hello $${name}!$(RESET)"
-
 
 # Pending...
 
