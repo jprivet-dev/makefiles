@@ -28,21 +28,28 @@ help: ## Print self-documented Makefile
 	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
-			split($$1, command, ":"); \
-			target=command[1]; \
+			split($$1, line, ":"); \
+			if (line[1] == "Makefile") { \
+				# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
+				# You need to use targets=line[2] instead of targets=line[1]. \
+				targets=line[2]; \
+			} else { \
+				targets=line[1]; \
+			} \
 			description=$$2; \
-			# --- space --- \
-			if (target=="##") \
+			if (targets == "##") { \
+				# --- space --- \
 				printf "\033[33m%s\n", ""; \
-			# --- title --- \
-			else if (target=="" && description!="") \
+			} else if (targets == "" && description != "") { \
+				# --- title --- \
 				printf "\033[33m\n%s\n", description; \
-			# --- command + description --- \
-			else if (target!="" && description!="") \
-				printf "\033[32m  %-30s \033[0m%s\n", target, description; \
-			# --- do nothing --- \
-			else \
-				; \
+			} else if (targets != "" && description != "") { \
+				# --- target, alias, description --- \
+				split(targets, parts, " "); \
+				target=parts[1]; \
+				alias=parts[2]; \
+				printf "\033[32m  %-26s \033[34m%-2s \033[0m%s\n", target, alias, description; \
+			} \
 		}'
 	@echo
 
@@ -60,7 +67,7 @@ versions: composer_version ## Display all versions of the libraries available in
 ## — COMPOSER 🧙 ——————————————————————————————————————————————————————————————
 
 .PHONY: composer
-composer: ## Run composer. Pass the parameters with "p=" (example: make composer p="require --dev phpunit/phpunit")
+composer: ## Run composer. Arguments: p (composer params). Example: $ make composer p="require --dev phpunit/phpunit"
 	@$(eval p ?=)
 	$(COMPOSER) $(p)
 
@@ -106,7 +113,7 @@ vendor: composer.json ## Check if vendor is up to date with the latest changes i
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
-confirm: ## Display a confirmation before executing a makefile command. Example: @$(MAKE) -s confirm question="Are you sure?" make_yes="my_command_on_yes" make_no="my_command_on_no"
+confirm: ## Display a confirmation before executing a makefile command. Arguments: question [make_yes] [make_no] [no_interaction]. Example: @$(MAKE) -s confirm question="Are you sure?" make_yes="command_on_yes" make_no="command_on_no"
 	@$(if $(question),, $(error question argument is required))   # Question to display
 	@$(eval make_yes ?=)                                          # Makefile commands to execute on yes
 	@$(eval make_no ?=)                                           # Makefile commands to execute on no
