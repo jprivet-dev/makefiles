@@ -26,13 +26,9 @@ help: ## Print self-documented Makefile
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			if (line[1] == "Makefile") { \
-				# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-				# You need to use targets=line[2] instead of targets=line[1]. \
-				targets=line[2]; \
-			} else { \
-				targets=line[1]; \
-			} \
+			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
+			# You need to use targets=line[2] instead of targets=line[1]. \
+			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
 				# --- space --- \
