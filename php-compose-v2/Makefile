@@ -2,23 +2,15 @@
 # EXECUTABLES (LOCAL)
 #
 
-COMPOSE_V1 := $(shell docker-compose version 2> /dev/null)
 COMPOSE_V2 := $(shell docker compose version 2> /dev/null)
-LOCAL_PHP  := $(shell php -v 2> /dev/null)
 
-ifdef COMPOSE_V2
-	DOCKER_COMPOSE = docker compose
-else ifdef COMPOSE_V1
-	DOCKER_COMPOSE = docker-compose
+ifndef COMPOSE_V2
+$(error Docker Compose CLI plugin is required but is not available on your system)
 endif
 
-ifdef DOCKER_COMPOSE
-	CONTAINER_PHP = $(DOCKER_COMPOSE) exec php
-else ifndef LOCAL_PHP
-$(error No dockerized or local PHP interpreter)
-endif
-
-PHP = $(CONTAINER_PHP) php
+EXEC          = docker compose exec
+CONTAINER_PHP = $(EXEC) php
+PHP           = $(CONTAINER_PHP) php
 
 #
 # COLORS
@@ -43,21 +35,24 @@ help: ## Print self-documented Makefile
 	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
-			split($$1, command, ":"); \
-			target=command[1]; \
+			split($$1, line, ":"); \
+			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
+			# You need to use targets=line[2] instead of targets=line[1]. \
+			targets=line[1]; \
 			description=$$2; \
-			# --- space --- \
-			if (target=="##") \
+			if (targets == "##") { \
+				# --- space --- \
 				printf "\033[33m%s\n", ""; \
-			# --- title --- \
-			else if (target=="" && description!="") \
+			} else if (targets == "" && description != "") { \
+				# --- title --- \
 				printf "\033[33m\n%s\n", description; \
-			# --- command + description --- \
-			else if (target!="" && description!="") \
-				printf "\033[32m  %-30s \033[0m%s\n", target, description; \
-			# --- do nothing --- \
-			else \
-				; \
+			} else if (targets != "" && description != "") { \
+				# --- target, alias, description --- \
+				split(targets, parts, " "); \
+				target=parts[1]; \
+				alias=parts[2]; \
+				printf "\033[32m  %-26s \033[34m%-2s \033[0m%s\n", target, alias, description; \
+			} \
 		}'
 	@echo
 
@@ -77,23 +72,23 @@ info: ## Show info
 
 .PHONY: dc_up
 dc_up: ## Start the container
-	$(DOCKER_COMPOSE) up
+	docker compose up
 
 .PHONY: dc_up_d
 dc_up_d: ## Start the container (wait for services to be running|healthy - detached mode)
-	$(DOCKER_COMPOSE) up --remove-orphans --wait
+	docker compose up --remove-orphans --wait
 
 .PHONY: dc_down
 dc_down: ## Stop the container
-	$(DOCKER_COMPOSE) down
+	docker compose down
 
 .PHONY: dc_build
 dc_build: ## Build or rebuild services
-	$(DOCKER_COMPOSE) build
+	docker compose build
 
 .PHONY: dc_logs
 dc_logs: ## See the container’s logs
-	$(DOCKER_COMPOSE) logs -f
+	docker compose logs -f
 
 ##
 
@@ -108,7 +103,7 @@ docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 ## — PHP 🐘 ———————————————————————————————————————————————————————————————————
 
 .PHONY: php
-php: ## Run PHP. Pass the parameter with "p=" (example: make php p="--help")
+php: ## Run PHP. Arguments: p (php params). Example: $ make php p="--help"
 	@$(eval p ?=)
 	$(PHP) $(p)
 
@@ -128,19 +123,11 @@ php_modules: ## Show compiled in modules
 
 .PHONY: vars
 vars: ## Show variables
-	@echo "COMPOSE_V1    : $(COMPOSE_V1)"
-	@echo "COMPOSE_V2    : $(COMPOSE_V2)"
-	@echo "LOCAL_PHP     : $(LOCAL_PHP)"
-	@echo "DOCKER_COMPOSE: $(DOCKER_COMPOSE)"
-	@echo "PHP           : $(PHP)"
-
-.PHONY: colors
-colors: ## Show colors
-	@echo "Part of $(BLUE)the sentence in blue$(RESET), then reset."
-	@echo "Part of $(GREEN)the sentence in green$(RESET), then reset."
-	@echo "Part of $(RED)the sentence in red$(RESET), then reset."
-	@echo "Part of $(YELLOW)the sentence in yellow$(RESET), then reset."
-	@echo "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset."
+	@echo "$(YELLOW)Vars:$(RESET)"
+	@echo "COMPOSE_V2   : $(COMPOSE_V2)"
+	@echo "EXEC         : $(EXEC)"
+	@echo "CONTAINER_PHP: $(CONTAINER_PHP)"
+	@echo "PHP          : $(PHP)"
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 

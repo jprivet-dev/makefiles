@@ -110,7 +110,7 @@ APP_ENV=prod
 
 ```
 $ make vars env_files 
-[WARNING] Your are in the prod environment!
+Warning: Your are in the prod environment!
 APP_ENV   : prod
 APP_SECRET: SECRET_PROD
 Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=prod]
@@ -135,7 +135,7 @@ APP_ENV=test
 
 ```
 $ make vars env_files 
-[WARNING] Your are in the test environment!
+Warning: Your are in the test environment!
 APP_ENV   : test
 APP_SECRET: SECRET_TEST
 Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=test]
@@ -174,8 +174,8 @@ Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=
 
 ```
 $ make vars env_files 
-[WARNING] It is not possible to use variables from .env.local.php file!
-[WARNING] The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php!
+Warning: It is not possible to use variables from .env.local.php file!
+Warning: The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php!
 APP_ENV   : dev
 APP_SECRET: SECRET_DEV
 Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=dev]

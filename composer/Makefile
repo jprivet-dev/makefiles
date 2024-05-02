@@ -1,4 +1,11 @@
 #
+# EXECUTABLES (LOCAL)
+#
+
+# Use directly composer or the dockerized version.
+COMPOSER = composer
+
+#
 # COLORS
 #
 
@@ -9,7 +16,7 @@ RED       = "\\033[31m"
 YELLOW    = "\\033[33m"
 UNDERLINE = "\\033[4m"
 
-## — 🎵 🚀 THE CONFIRM MAKEFILE 🚀 🎵 —————————————————————————————————————————
+## — 🎵 🚀 THE COMPOSER MAKEFILE 🚀 🎵 ————————————————————————————————————————
 
 # Print self-documented Makefile:
 # $ make
@@ -44,43 +51,60 @@ help: ## Print self-documented Makefile
 
 ## — PROJECT 🚀 ———————————————————————————————————————————————————————————————
 
-.PHONY: do_you_want
-do_you_want: ## Do you want? [y/N]
-	@$(MAKE) -s confirm question="Do you want?" make_yes="_internal_yes_i_do" make_no="_internal_no_i_don_t"
+.PHONY: install
+install: composer_install ## Install a local project (the very first time after cloning)
 
-.PHONY: _internal_yes_i_do
-_internal_yes_i_do: # Yes, I do! INTERNAL
-	@echo "$(BLUE)Yes, I do!$(RESET)"
+.PHONY: check
+check: composer_validate ## Check everything before you deliver
 
-.PHONY: _internal_no_i_don_t
-_internal_no_i_don_t: # No, I don't! INTERNAL
-	@echo "$(RED)No, I don't!$(RESET)"
+.PHONY: versions
+versions: composer_version ## Display all versions of the libraries available in that Makefile
 
-.PHONY: do_you_want_yes_action
-do_you_want_yes_action: ## Do you want? ('yes' action) [y/N]
-	@$(MAKE) -s confirm question="Do you want? ('yes' action)" make_yes="_internal_yes_i_do"
+## — COMPOSER 🧙 ——————————————————————————————————————————————————————————————
 
-.PHONY: do_you_want_no_action
-do_you_want_no_action: ## Do you want? ('no' action) [y/N]
-	@$(MAKE) -s confirm question="Do you want? ('no' action)" make_no="_internal_no_i_don_t"
+.PHONY: composer
+composer: ## Run composer. Arguments: p (composer params). Example: $ make composer p="require --dev phpunit/phpunit"
+	@$(eval p ?=)
+	$(COMPOSER) $(p)
 
-.PHONY: do_you_want_no_interaction
-do_you_want_no_interaction: ## Do you want? (no interaction)
-	@$(MAKE) -s do_you_want no_interaction="true"
+.PHONY: composer_version
+composer_version: ## Composer version
+	$(COMPOSER) --version
 
-##
+.PHONY: composer_validate
+composer_validate: ## Validate composer.json and composer.lock
+	$(COMPOSER) validate --strict --lock
 
-.PHONY: do_you_want_to_continue
-do_you_want_to_continue: confirm_continue ## Do you want to continue? [y/N]
-	@echo "$(YELLOW)Yes, we continue!$(RESET)"
+.PHONY: composer_clean
+composer_clean: confirm_continue ## Remove vendor & composer.lock [y/N]
+	rm composer.lock && rm -Rf vendor
 
 ##
 
-.PHONY: choose_between_yes_or_no
-choose_between_yes_or_no: ## Choose between yes or no [y/N]
-	@echo -n "$(GREEN)Choose between yes or no$(RESET) [$(YELLOW)y/N$(RESET)]: "; read answer; answer=$${answer:-N}; \
-	if [ "$${answer}" = y ] || [ "$${answer}" = Y ]; then $(MAKE) -s _internal_yes_i_do; \
-	else $(MAKE) -s _internal_no_i_don_t; fi
+.PHONY: composer_install
+composer_install: vendor composer.lock ## Install packages using composer
+
+.PHONY: composer_install@prod
+composer_install@prod: ## Install packages using composer (PROD)
+	$(COMPOSER) install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
+
+.PHONY: composer_update
+composer_update: ## Update packages using composer
+	$(COMPOSER) update
+
+.PHONY: composer_update@prod
+composer_update@prod: ## Update packages using composer (PROD)
+	$(COMPOSER) update --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
+
+##
+
+composer.lock: composer.json ## Check if the composer.lock is up to date with the latest changes in composer.json (run 'composer update') [y/N]
+	@echo "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)"
+	@$(MAKE) -s confirm question="Run 'composer update'?" make_yes="composer_update"
+
+vendor: composer.json ## Check if vendor is up to date with the latest changes in composer.json (run 'composer install')
+	@echo "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)"
+	$(COMPOSER) install
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 

@@ -3,6 +3,7 @@
 #
 
 # Files in order of increasing priority.
+# @see https://github.com/jprivet-dev/makefiles/tree/main/symfony-env-include
 # @see https://www.gnu.org/software/make/manual/html_node/Environment.html
 # @see https://github.com/symfony/recipes/issues/18
 # @see https://symfony.com/doc/current/quick_tour/the_architecture.html#environment-variables
@@ -17,19 +18,19 @@ FILE_ENV := $(APP_ENV)
 -include .env.$(FILE_ENV).local
 
 ifneq ($(FILE_ENV),$(APP_ENV))
-$(info [WARNING] APP_ENV is overloaded outside .env and .env.local files!)
+$(info Warning: APP_ENV is overloaded outside .env and .env.local files)
 endif
 
 ifeq ($(FILE_ENV),prod)
-$(info [WARNING] Your are in the prod environment!)
+$(info Warning: Your are in the prod environment)
 else ifeq ($(FILE_ENV),test)
-$(info [WARNING] Your are in the test environment!)
+$(info Warning: Your are in the test environment)
 endif
 
 # @see https://symfony.com/doc/current/deployment.html#b-configure-your-environment-variables
 ifneq ($(wildcard .env.local.php),)
-$(info [WARNING] It is not possible to use variables from .env.local.php file!)
-$(info [WARNING] The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php!)
+$(info Warning: It is not possible to use variables from .env.local.php file)
+$(info Warning: The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php)
 endif
 
 #
@@ -55,21 +56,24 @@ help: ## Print self-documented Makefile
 	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
-			split($$1, command, ":"); \
-			target=command[2]; \
+			split($$1, line, ":"); \
+			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
+			# You need to use targets=line[2] instead of targets=line[1]. \
+			targets=line[2]; \
 			description=$$2; \
-			# --- space --- \
-			if (target=="##") \
+			if (targets == "##") { \
+				# --- space --- \
 				printf "\033[33m%s\n", ""; \
-			# --- title --- \
-			else if (target=="" && description!="") \
+			} else if (targets == "" && description != "") { \
+				# --- title --- \
 				printf "\033[33m\n%s\n", description; \
-			# --- command + description --- \
-			else if (target!="" && description!="") \
-				printf "\033[32m  %-30s \033[0m%s\n", target, description; \
-			# --- do nothing --- \
-			else \
-				; \
+			} else if (targets != "" && description != "") { \
+				# --- target, alias, description --- \
+				split(targets, parts, " "); \
+				target=parts[1]; \
+				alias=parts[2]; \
+				printf "\033[32m  %-26s \033[34m%-2s \033[0m%s\n", target, alias, description; \
+			} \
 		}'
 	@echo
 
@@ -77,12 +81,13 @@ help: ## Print self-documented Makefile
 
 .PHONY: vars
 vars: ## Show variables
+	@echo "$(YELLOW)Vars:$(RESET)"
 	@echo "APP_ENV   : $(APP_ENV)"
 	@echo "APP_SECRET: $(APP_SECRET)"
 
 .PHONY: env_files
 env_files: ## Show env files loaded into that Makefile
-	@echo "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]$(RESET)"
+	@echo "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(RESET)"
 ifneq ("$(wildcard .env.$(FILE_ENV).local)","")
 	@echo "* $(GREEN)✓$(RESET) .env.$(FILE_ENV).local"
 else
