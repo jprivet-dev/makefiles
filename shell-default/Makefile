@@ -45,11 +45,11 @@ help: ## Print self-documented Makefile
 ## — HELLO 🖖 —————————————————————————————————————————————————————————————————
 
 .PHONY: hello_1
-hello_1: ## Arguments: name. Example: $ make hello_1 name=Michel
+hello_1: ## Arguments: [name]. Example: $ make hello_1 name=Michel
 	@[ "$(name)" = "" ] && echo "$(BLUE)(1) Hello World!$(RESET)" || echo "$(YELLOW)(1) Hello $(name)!$(RESET)"
 
 .PHONY: hello_2
-hello_2: ## Arguments: name. Example: $ make hello_2 name=Michel
+hello_2: ## Arguments: [name]. Example: $ make hello_2 name=Michel
 	@if [ "$(name)" = "" ]; \
 	then \
 		echo "$(BLUE)(2) Hello World!$(RESET)"; \
@@ -58,17 +58,17 @@ hello_2: ## Arguments: name. Example: $ make hello_2 name=Michel
 	fi
 
 .PHONY: hello_3
-hello_3: ## Arguments: name. Example: $ make hello_3 name=Michel
+hello_3: ## Arguments: [name]. Example: $ make hello_3 name=Michel
 	@name=$${name:-"World"}; \
 	echo "$(GREEN)(3) Hello $${name}!$(RESET)"
 
 .PHONY: hello_4
 # @see https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html
-hello_4: ## Arguments: name. Example: $ make hello_4 name=Michel
+hello_4: ## Arguments: [name]. Example: $ make hello_4 name=Michel
 	@$(if $(name), echo "$(YELLOW)(4) Hello $(name)!$(RESET)", echo "$(BLUE)(4) Hello World!$(RESET)")
 
 .PHONY: hello_5
-hello_5: ## Arguments: name. Example: $ make hello_5 name=Michel
+hello_5: ## Arguments: [name]. Example: $ make hello_5 name=Michel
 ifeq ($(name),)
 	@echo "$(BLUE)(5) Hello World!$(RESET)"
 else
@@ -76,7 +76,7 @@ else
 endif
 
 .PHONY: hello_6
-hello_6: ## Arguments: name. Example: $ make hello_6 name=Michel
+hello_6: ## Arguments: [name]. Example: $ make hello_6 name=Michel
 	@$(eval name ?= World)
 	@echo "$(GREEN)(6) Hello $(name)!$(RESET)"
 

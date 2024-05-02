@@ -49,11 +49,11 @@ help: ## Print self-documented Makefile
 ## — HELLO 🖖 —————————————————————————————————————————————————————————————————
 
 .PHONY: hello_1
-hello_1: ## Arguments: name. Example: $ make hello_1 name=Michel
+hello_1: ## Arguments: [name]. Example: $ make hello_1 name=Michel
 	@[ "$(name)" == "" ] && echo -e "$(BLUE)(1) Hello World!$(RESET)" || echo -e "$(YELLOW)(1) Hello $(name)!$(RESET)"
 
 .PHONY: hello_2
-hello_2: ## Arguments: name. Example: $ make hello_2 name=Michel
+hello_2: ## Arguments: [name]. Example: $ make hello_2 name=Michel
 	@if [ "$(name)" == "" ]; \
 	then \
 		echo -e "$(BLUE)(2) Hello World!$(RESET)"; \
@@ -62,7 +62,7 @@ hello_2: ## Arguments: name. Example: $ make hello_2 name=Michel
 	fi
 
 .PHONY: hello_3
-hello_3: ## Arguments: name. Example: $ make hello_3 name=Michel
+hello_3: ## Arguments: [name]. Example: $ make hello_3 name=Michel
 	@$(eval name ?= World)
 	@echo -e "$(GREEN)(3) Hello $(name)!$(RESET)"
 
