@@ -81,6 +81,7 @@ composer_clean: confirm_continue ## Remove vendor & composer.lock [y/N]
 
 .PHONY: composer_install
 composer_install: vendor composer.lock ## Install packages using composer
+	$(COMPOSER) install
 
 .PHONY: composer_install@prod
 composer_install@prod: ## Install packages using composer (PROD)
