@@ -19,7 +19,7 @@ FOO = foo
 BAR = bar
 BAZ = $(FOO) bis
 
-## — 🎵 🛠️ THE VARS MAKEFILE 🛠️ 🎵 ————————————————————————————————————————————
+## — 🎵 🛠️  THE VARS MAKEFILE 🛠️  🎵 ————————————————————————————————————————————
 
 # Print self-documented Makefile:
 # $ make
@@ -28,12 +28,10 @@ BAZ = $(FOO) bis
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \

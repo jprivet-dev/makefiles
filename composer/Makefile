@@ -25,12 +25,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -99,11 +97,11 @@ composer_update@prod: ## Update packages using composer (PROD)
 ##
 
 composer.lock: composer.json ## Check if the composer.lock is up to date with the latest changes in composer.json (run 'composer update') [y/N]
-	@echo "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)"
+	@echo -e "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)"
 	@$(MAKE) -s confirm question="Run 'composer update'?" make_yes="composer_update"
 
 vendor: composer.json ## Check if vendor is up to date with the latest changes in composer.json (run 'composer install')
-	@echo "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)"
+	@echo -e "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)"
 	$(COMPOSER) install
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
@@ -122,11 +120,11 @@ confirm: ## Display a confirmation before executing a makefile command. Argument
 	fi; \
 	answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
-		[ -z "$$make_yes" ] && echo "$(YELLOW)(YES) no action!$(RESET)" || $(MAKE) -s $$make_yes; \
+		[ -z "$$make_yes" ] && echo -e "$(YELLOW)(YES) no action!$(RESET)" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && echo "$(YELLOW)(NO) no action!$(RESET)" || $(MAKE) -s $$make_no; \
+		[ -z "$$make_no" ] && echo -e "$(YELLOW)(NO) no action!$(RESET)" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@echo -n "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@echo -en "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]

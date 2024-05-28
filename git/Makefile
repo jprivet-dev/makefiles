@@ -34,12 +34,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -77,19 +75,19 @@ git_version: ## Git version
 
 .PHONY: git_main
 git_main: ## Show the name of the main branch
-	@echo "$(YELLOW)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(RESET)"
+	@echo -e "$(YELLOW)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(RESET)"
 
 .PHONY: git_current
 git_current: ## Show the current branch
-	@echo "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)"
+	@echo -e "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)"
 
 .PHONY: git_exists
 git_exists: ## Check if a branch exists. Arguments: branch. Example: $ make git_exists branch=main)
 	@$(if $(branch),, $(error branch argument is required))
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@echo "$(RED)⨯$(RESET) The $(branch) branch does not exist."
+	@echo -e "$(RED)⨯$(RESET) The $(branch) branch does not exist."
 else
-	@echo "$(GREEN)✓$(RESET) The $(branch) branch exists."
+	@echo -e "$(GREEN)✓$(RESET) The $(branch) branch exists."
 endif
 
 # Pending...
@@ -98,14 +96,14 @@ endif
 __git_exists: # TODO: Do not work. The `main` default value is not returned in the `git rev-parse` command and the `ifeq` condition
 	@$(eval branch ?= main)
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@echo "$(RED)⨯$(RESET) The $(branch) branch does not exist."
+	@echo -e "$(RED)⨯$(RESET) The $(branch) branch does not exist."
 else
-	@echo "$(GREEN)✓$(RESET) The $(branch) branch exists."
+	@echo -e "$(GREEN)✓$(RESET) The $(branch) branch exists."
 endif
 
 .PHONY: __git_exists_bis
 __git_exists_bis: # TODO: Works very well, with a default value
 	@branch=$${branch:-"main"}; exists=$$(git rev-parse --verify $${branch} 2>/dev/null); \
 	[ "$${exists}" = "" ] \
-		&& echo "$(RED)⨯$(RESET) The $${branch} branch does not exist." \
-		|| echo "$(GREEN)✓$(RESET) The $${branch} branch exists.";
+		&& echo -e "$(RED)⨯$(RESET) The $${branch} branch does not exist." \
+		|| echo -e "$(GREEN)✓$(RESET) The $${branch} branch exists.";

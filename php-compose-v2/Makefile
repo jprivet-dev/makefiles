@@ -32,12 +32,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -66,7 +64,7 @@ stop: dc_down ## Stop the project
 
 .PHONY: info
 info: ## Show info
-	@echo "Go on $(GREEN)http://0.0.0.0:8000/$(RESET)"
+	@echo -e "Go on $(GREEN)http://0.0.0.0:8000/$(RESET)"
 
 ## — DOCKER 🐳 ————————————————————————————————————————————————————————————————
 
@@ -123,7 +121,7 @@ php_modules: ## Show compiled in modules
 
 .PHONY: vars
 vars: ## Show variables
-	@echo "$(YELLOW)Vars:$(RESET)"
+	@echo -e "$(YELLOW)Vars:$(RESET)"
 	@echo "COMPOSE_V2   : $(COMPOSE_V2)"
 	@echo "EXEC         : $(EXEC)"
 	@echo "CONTAINER_PHP: $(CONTAINER_PHP)"
@@ -133,4 +131,4 @@ vars: ## Show variables
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@echo -n "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@echo -en "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]

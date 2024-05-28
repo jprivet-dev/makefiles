@@ -18,12 +18,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -46,8 +44,8 @@ help: ## Print self-documented Makefile
 
 .PHONY: colors
 colors: ## Show colors
-	@echo "Part of $(BLUE)the sentence in blue$(RESET), then reset."
-	@echo "Part of $(GREEN)the sentence in green$(RESET), then reset."
-	@echo "Part of $(RED)the sentence in red$(RESET), then reset."
-	@echo "Part of $(YELLOW)the sentence in yellow$(RESET), then reset."
-	@echo "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset."
+	@echo -e "Part of $(BLUE)the sentence in blue$(RESET), then reset."
+	@echo -e "Part of $(GREEN)the sentence in green$(RESET), then reset."
+	@echo -e "Part of $(RED)the sentence in red$(RESET), then reset."
+	@echo -e "Part of $(YELLOW)the sentence in yellow$(RESET), then reset."
+	@echo -e "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset."

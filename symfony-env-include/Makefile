@@ -44,7 +44,7 @@ RED       = "\\033[31m"
 YELLOW    = "\\033[33m"
 UNDERLINE = "\\033[4m"
 
-## — 🎵 🛠️ THE SYMFONY ENV MAKEFILE 🛠️ 🎵 —————————————————————————————————————
+## — 🎵 🛠️  THE SYMFONY ENV MAKEFILE 🛠️  🎵 —————————————————————————————————————
 
 # Print self-documented Makefile:
 # $ make
@@ -53,13 +53,11 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
-			targets=line[2]; \
+			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
 				# --- space --- \
@@ -81,30 +79,30 @@ help: ## Print self-documented Makefile
 
 .PHONY: vars
 vars: ## Show variables
-	@echo "$(YELLOW)Vars:$(RESET)"
+	@echo -e "$(YELLOW)Vars:$(RESET)"
 	@echo "APP_ENV   : $(APP_ENV)"
 	@echo "APP_SECRET: $(APP_SECRET)"
 
 .PHONY: env_files
 env_files: ## Show env files loaded into that Makefile
-	@echo "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(RESET)"
+	@echo -e "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(RESET)"
 ifneq ("$(wildcard .env.$(FILE_ENV).local)","")
-	@echo "* $(GREEN)✓$(RESET) .env.$(FILE_ENV).local"
+	@echo -e "* $(GREEN)✓$(RESET) .env.$(FILE_ENV).local"
 else
-	@echo "* $(RED)⨯$(RESET) .env.$(FILE_ENV).local"
+	@echo -e "* $(RED)⨯$(RESET) .env.$(FILE_ENV).local"
 endif
 ifneq ("$(wildcard .env.$(FILE_ENV))","")
-	@echo "* $(GREEN)✓$(RESET) .env.$(FILE_ENV)"
+	@echo -e "* $(GREEN)✓$(RESET) .env.$(FILE_ENV)"
 else
-	@echo "* $(RED)⨯$(RESET) .env.$(FILE_ENV)"
+	@echo -e "* $(RED)⨯$(RESET) .env.$(FILE_ENV)"
 endif
 ifneq ("$(wildcard .env.local)","")
-	@echo "* $(GREEN)✓$(RESET) .env.local"
+	@echo -e "* $(GREEN)✓$(RESET) .env.local"
 else
-	@echo "* $(RED)⨯$(RESET) .env.local"
+	@echo -e "* $(RED)⨯$(RESET) .env.local"
 endif
 ifneq ("$(wildcard .env)","")
-	@echo "* $(GREEN)✓$(RESET) .env"
+	@echo -e "* $(GREEN)✓$(RESET) .env"
 else
-	@echo "* $(RED)⨯$(RESET) .env"
+	@echo -e "* $(RED)⨯$(RESET) .env"
 endif
