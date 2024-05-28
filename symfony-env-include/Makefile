@@ -79,30 +79,30 @@ help: ## Print self-documented Makefile
 
 .PHONY: vars
 vars: ## Show variables
-	@echo -e "$(YELLOW)Vars:$(RESET)"
-	@echo "APP_ENV   : $(APP_ENV)"
-	@echo "APP_SECRET: $(APP_SECRET)"
+	@printf "$(YELLOW)Vars:$(RESET)\n"
+	@printf "APP_ENV   : $(APP_ENV)\n"
+	@printf "APP_SECRET: $(APP_SECRET)\n"
 
 .PHONY: env_files
 env_files: ## Show env files loaded into that Makefile
-	@echo -e "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(RESET)"
+	@printf "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(RESET)\n"
 ifneq ("$(wildcard .env.$(FILE_ENV).local)","")
-	@echo -e "* $(GREEN)✓$(RESET) .env.$(FILE_ENV).local"
+	@printf "* $(GREEN)✓$(RESET) .env.$(FILE_ENV).local\n"
 else
-	@echo -e "* $(RED)⨯$(RESET) .env.$(FILE_ENV).local"
+	@printf "* $(RED)⨯$(RESET) .env.$(FILE_ENV).local\n"
 endif
 ifneq ("$(wildcard .env.$(FILE_ENV))","")
-	@echo -e "* $(GREEN)✓$(RESET) .env.$(FILE_ENV)"
+	@printf "* $(GREEN)✓$(RESET) .env.$(FILE_ENV)\n"
 else
-	@echo -e "* $(RED)⨯$(RESET) .env.$(FILE_ENV)"
+	@printf "* $(RED)⨯$(RESET) .env.$(FILE_ENV)\n"
 endif
 ifneq ("$(wildcard .env.local)","")
-	@echo -e "* $(GREEN)✓$(RESET) .env.local"
+	@printf "* $(GREEN)✓$(RESET) .env.local\n"
 else
-	@echo -e "* $(RED)⨯$(RESET) .env.local"
+	@printf "* $(RED)⨯$(RESET) .env.local\n"
 endif
 ifneq ("$(wildcard .env)","")
-	@echo -e "* $(GREEN)✓$(RESET) .env"
+	@printf "* $(GREEN)✓$(RESET) .env\n"
 else
-	@echo -e "* $(RED)⨯$(RESET) .env"
+	@printf "* $(RED)⨯$(RESET) .env\n"
 endif

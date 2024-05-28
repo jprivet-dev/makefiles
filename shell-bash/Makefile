@@ -48,24 +48,24 @@ help: ## Print self-documented Makefile
 
 .PHONY: hello_1
 hello_1: ## Arguments: [name]. Example: $ make hello_1 name=Michel
-	@[ "$(name)" == "" ] && echo -e "$(BLUE)(1) Hello World!$(RESET)" || echo -e "$(YELLOW)(1) Hello $(name)!$(RESET)"
+	@[ "$(name)" == "" ] && printf "$(BLUE)(1) Hello World!$(RESET)\n" || printf "$(YELLOW)(1) Hello $(name)!$(RESET)\n"
 
 .PHONY: hello_2
 hello_2: ## Arguments: [name]. Example: $ make hello_2 name=Michel
 	@if [ "$(name)" == "" ]; \
 	then \
-		echo -e "$(BLUE)(2) Hello World!$(RESET)"; \
+		printf "$(BLUE)(2) Hello World!$(RESET)\n"; \
 	else \
-		echo -e "$(YELLOW)(2) Hello $(name)!$(RESET)"; \
+		printf "$(YELLOW)(2) Hello $(name)!$(RESET)\n"; \
 	fi
 
 .PHONY: hello_3
 hello_3: ## Arguments: [name]. Example: $ make hello_3 name=Michel
 	@$(eval name ?= World)
-	@echo -e "$(GREEN)(3) Hello $(name)!$(RESET)"
+	@printf "$(GREEN)(3) Hello $(name)!$(RESET)\n"
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: shell
 shell: ## Show the program used as the shell in that Makefile
-	@echo -e "SHELL: $(GREEN)$(SHELL)$(RESET)"
+	@printf "SHELL: $(GREEN)$(SHELL)$(RESET)\n"

@@ -44,43 +44,43 @@ help: ## Print self-documented Makefile
 
 .PHONY: hello_1
 hello_1: ## Arguments: [name]. Example: $ make hello_1 name=Michel
-	@[ "$(name)" = "" ] && echo -e "$(BLUE)(1) Hello World!$(RESET)" || echo -e "$(YELLOW)(1) Hello $(name)!$(RESET)"
+	@[ "$(name)" = "" ] && printf "$(BLUE)(1) Hello World!$(RESET)\n" || printf "$(YELLOW)(1) Hello $(name)!$(RESET)\n"
 
 .PHONY: hello_2
 hello_2: ## Arguments: [name]. Example: $ make hello_2 name=Michel
 	@if [ "$(name)" = "" ]; \
 	then \
-		echo -e "$(BLUE)(2) Hello World!$(RESET)"; \
+		printf "$(BLUE)(2) Hello World!$(RESET)\n"; \
 	else \
-		echo -e "$(YELLOW)(2) Hello $(name)!$(RESET)"; \
+		printf "$(YELLOW)(2) Hello $(name)!$(RESET)\n"; \
 	fi
 
 .PHONY: hello_3
 hello_3: ## Arguments: [name]. Example: $ make hello_3 name=Michel
 	@name=$${name:-"World"}; \
-	echo -e "$(GREEN)(3) Hello $${name}!$(RESET)"
+	printf "$(GREEN)(3) Hello $${name}!$(RESET)\n"
 
 .PHONY: hello_4
 # @see https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html
 hello_4: ## Arguments: [name]. Example: $ make hello_4 name=Michel
-	@$(if $(name), echo -e "$(YELLOW)(4) Hello $(name)!$(RESET)", echo -e "$(BLUE)(4) Hello World!$(RESET)")
+	@$(if $(name), printf "$(YELLOW)(4) Hello $(name)!$(RESET)\n", printf "$(BLUE)(4) Hello World!$(RESET)\n")
 
 .PHONY: hello_5
 hello_5: ## Arguments: [name]. Example: $ make hello_5 name=Michel
 ifeq ($(name),)
-	@echo -e "$(BLUE)(5) Hello World!$(RESET)"
+	@printf "$(BLUE)(5) Hello World!$(RESET)\n"
 else
-	@echo -e "$(YELLOW)(5) Hello $(name)!$(RESET)"
+	@printf "$(YELLOW)(5) Hello $(name)!$(RESET)\n"
 endif
 
 .PHONY: hello_6
 hello_6: ## Arguments: [name]. Example: $ make hello_6 name=Michel
 	@$(eval name ?= World)
-	@echo -e "$(GREEN)(6) Hello $(name)!$(RESET)"
+	@printf "$(GREEN)(6) Hello $(name)!$(RESET)\n"
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: shell
 shell: ## Show the program used as the shell in that Makefile
-	@echo -e "SHELL: $(GREEN)$(SHELL)$(RESET)"
+	@printf "SHELL: $(GREEN)$(SHELL)$(RESET)\n"
 

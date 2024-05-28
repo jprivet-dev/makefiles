@@ -97,11 +97,11 @@ composer_update@prod: ## Update packages using composer (PROD)
 ##
 
 composer.lock: composer.json ## Check if the composer.lock is up to date with the latest changes in composer.json (run 'composer update') [y/N]
-	@echo -e "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)"
+	@printf "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)\n"
 	@$(MAKE) -s confirm question="Run 'composer update'?" make_yes="composer_update"
 
 vendor: composer.json ## Check if vendor is up to date with the latest changes in composer.json (run 'composer install')
-	@echo -e "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)"
+	@printf "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)\n"
 	$(COMPOSER) install
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
@@ -115,16 +115,16 @@ confirm: ## Display a confirmation before executing a makefile command. Argument
 	@\
 	question=$${question:-"Confirm?"}; \
 	if [ "$${no_interaction}" != "true" ]; then \
-		echo -n "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
+		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
 		read answer; \
 	fi; \
 	answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
-		[ -z "$$make_yes" ] && echo -e "$(YELLOW)(YES) no action!$(RESET)" || $(MAKE) -s $$make_yes; \
+		[ -z "$$make_yes" ] && printf "$(YELLOW)(YES) no action!$(RESET)\n" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && echo -e "$(YELLOW)(NO) no action!$(RESET)" || $(MAKE) -s $$make_no; \
+		[ -z "$$make_no" ] && printf "$(YELLOW)(NO) no action!$(RESET)\n" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@echo -en "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]

@@ -52,11 +52,11 @@ do_you_want: ## Do you want? [y/N]
 
 .PHONY: _internal_yes_i_do
 _internal_yes_i_do: # Yes, I do! INTERNAL
-	@echo -e "$(BLUE)Yes, I do!$(RESET)"
+	@printf "$(BLUE)Yes, I do!$(RESET)\n"
 
 .PHONY: _internal_no_i_don_t
 _internal_no_i_don_t: # No, I don't! INTERNAL
-	@echo -e "$(RED)No, I don't!$(RESET)"
+	@printf "$(RED)No, I don't!$(RESET)\n"
 
 .PHONY: do_you_want_yes_action
 do_you_want_yes_action: ## Do you want? ('yes' action) [y/N]
@@ -74,13 +74,13 @@ do_you_want_no_interaction: ## Do you want? (no interaction)
 
 .PHONY: do_you_want_to_continue
 do_you_want_to_continue: confirm_continue ## Do you want to continue? [y/N]
-	@echo -e "$(YELLOW)Yes, we continue!$(RESET)"
+	@printf "$(YELLOW)Yes, we continue!$(RESET)\n"
 
 ##
 
 .PHONY: choose_between_yes_or_no
 choose_between_yes_or_no: ## Choose between yes or no [y/N]
-	@echo -en "$(GREEN)Choose between yes or no$(RESET) [$(YELLOW)y/N$(RESET)]: "; read answer; answer=$${answer:-N}; \
+	@printf "$(GREEN)Choose between yes or no$(RESET) [$(YELLOW)y/N$(RESET)]: "; read answer; answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ]; then $(MAKE) -s _internal_yes_i_do; \
 	else $(MAKE) -s _internal_no_i_don_t; fi
 
@@ -95,16 +95,16 @@ confirm: ## Display a confirmation before executing a makefile command. Argument
 	@\
 	question=$${question:-"Confirm?"}; \
 	if [ "$${no_interaction}" != "true" ]; then \
-		echo -en "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
+		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
 		read answer; \
 	fi; \
 	answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
-		[ -z "$$make_yes" ] && echo -e "$(YELLOW)(YES) no action!$(RESET)" || $(MAKE) -s $$make_yes; \
+		[ -z "$$make_yes" ] && printf "$(YELLOW)(YES) no action!$(RESET)\n" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && echo -e "$(YELLOW)(NO) no action!$(RESET)" || $(MAKE) -s $$make_no; \
+		[ -z "$$make_no" ] && printf "$(YELLOW)(NO) no action!$(RESET)\n" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@echo -en "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && echo -n && read answer && [ $${answer:-N} = y ]
+	@printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]

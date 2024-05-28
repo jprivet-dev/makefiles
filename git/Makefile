@@ -75,19 +75,19 @@ git_version: ## Git version
 
 .PHONY: git_main
 git_main: ## Show the name of the main branch
-	@echo -e "$(YELLOW)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(RESET)"
+	@printf "$(YELLOW)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(RESET)\n"
 
 .PHONY: git_current
 git_current: ## Show the current branch
-	@echo -e "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)"
+	@printf "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)\n"
 
 .PHONY: git_exists
 git_exists: ## Check if a branch exists. Arguments: branch. Example: $ make git_exists branch=main)
 	@$(if $(branch),, $(error branch argument is required))
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@echo -e "$(RED)⨯$(RESET) The $(branch) branch does not exist."
+	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
 else
-	@echo -e "$(GREEN)✓$(RESET) The $(branch) branch exists."
+	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
 endif
 
 # Pending...
@@ -96,14 +96,14 @@ endif
 __git_exists: # TODO: Do not work. The `main` default value is not returned in the `git rev-parse` command and the `ifeq` condition
 	@$(eval branch ?= main)
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@echo -e "$(RED)⨯$(RESET) The $(branch) branch does not exist."
+	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
 else
-	@echo -e "$(GREEN)✓$(RESET) The $(branch) branch exists."
+	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
 endif
 
 .PHONY: __git_exists_bis
 __git_exists_bis: # TODO: Works very well, with a default value
 	@branch=$${branch:-"main"}; exists=$$(git rev-parse --verify $${branch} 2>/dev/null); \
 	[ "$${exists}" = "" ] \
-		&& echo -e "$(RED)⨯$(RESET) The $${branch} branch does not exist." \
-		|| echo -e "$(GREEN)✓$(RESET) The $${branch} branch exists.";
+		&& printf "$(RED)⨯$(RESET) The $${branch} branch does not exist.\n" \
+		|| printf "$(GREEN)✓$(RESET) The $${branch} branch exists.\n";

@@ -9,11 +9,13 @@
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			targets=line[1]; \
+			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
+			# You need to use targets=line[2] instead of targets=line[1]. \
+			targets=line[2]; \
 			description=$$2; \
 			if (targets == "##") { \
 				# --- space --- \
@@ -35,31 +37,31 @@ help: ## Print self-documented Makefile
 
 .PHONY: foo_command_1 f1
 foo_command_1 f1: foo_command_2 ## Short description for foo_command_1
-	@echo "(foo_command_1)"
+	@printf "(foo_command_1)\n"
 
 .PHONY: foo_command_2
 foo_command_2: ## Short description for foo_command_2
-	@echo "(foo_command_2)"
+	@printf "(foo_command_2)\n"
 
 ##
 
 .PHONY: foo_command_3 f3
 foo_command_3 f3: ## Short description for foo_command_3
-	@echo "(foo_command_3)"
+	@printf "(foo_command_3)\n"
 
 .PHONY: foo_command_4
 foo_command_4: foo_command_3 ## Short description for foo_command_4
-	@echo "(foo_command_4)"
+	@printf "(foo_command_4)\n"
 
 ## — BAR 🚧‍ ———————————————————————————————————————————————————————————————————
 
 .PHONY: bar_command_1 b1
 bar_command_1 b1: bar_command_2 ## Short description for bar_command_1
-	@echo "(bar_command_1)"
+	@printf "(bar_command_1)\n"
 
 .PHONY: bar_command_2
 bar_command_2: ## Short description for bar_command_2
-	@echo "(bar_command_2)"
+	@printf "(bar_command_2)\n"
 
 #
 # INVISIBLE
@@ -67,9 +69,9 @@ bar_command_2: ## Short description for bar_command_2
 
 .PHONY: invisible_command_1
 invisible_command_1: invisible_command_2 # Short description for invisible_command_1
-	@echo "(invisible_command_1)"
+	@printf "(invisible_command_1)\n"
 
 .PHONY: invisible_command_2
 invisible_command_2:
-	@echo "(invisible_command_2)"
+	@printf "(invisible_command_2)\n"
 

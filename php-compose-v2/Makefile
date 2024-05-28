@@ -64,7 +64,7 @@ stop: dc_down ## Stop the project
 
 .PHONY: info
 info: ## Show info
-	@echo -e "Go on $(GREEN)http://0.0.0.0:8000/$(RESET)"
+	@printf "Go on $(GREEN)http://0.0.0.0:8000/$(RESET)\n"
 
 ## — DOCKER 🐳 ————————————————————————————————————————————————————————————————
 
@@ -121,14 +121,14 @@ php_modules: ## Show compiled in modules
 
 .PHONY: vars
 vars: ## Show variables
-	@echo -e "$(YELLOW)Vars:$(RESET)"
-	@echo "COMPOSE_V2   : $(COMPOSE_V2)"
-	@echo "EXEC         : $(EXEC)"
-	@echo "CONTAINER_PHP: $(CONTAINER_PHP)"
-	@echo "PHP          : $(PHP)"
+	@printf "$(YELLOW)Vars:$(RESET)\n"
+	@printf "COMPOSE_V2   : $(COMPOSE_V2)\n"
+	@printf "EXEC         : $(EXEC)\n"
+	@printf "CONTAINER_PHP: $(CONTAINER_PHP)\n"
+	@printf "PHP          : $(PHP)\n"
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@echo -en "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]

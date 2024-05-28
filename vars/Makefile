@@ -56,6 +56,6 @@ help: ## Print self-documented Makefile
 # @see https://stackoverflow.com/questions/7117978/gnu-make-list-the-values-of-all-variables-or-macros-in-a-particular-run
 vars: ## Show variables (exclude built-in variables)
 	$(foreach v, \
-		$(shell echo "$(filter-out $(BUILT_IN_VARS) BUILT_IN_VARS, $(.VARIABLES))" | tr ' ' '\n' | sort), \
+		$(shell printf "$(filter-out $(BUILT_IN_VARS) BUILT_IN_VARS, $(.VARIABLES))" | tr ' ' '\n' | sort), \
 		$(info $(shell printf "%-20s" "$(v)")= $(value $(v))) \
 	)

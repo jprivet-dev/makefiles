@@ -5,6 +5,6 @@ include file_3.inc
 .DEFAULT_GOAL = vars
 .PHONY: vars
 vars: ## Show variables
-	@echo "VAR_A: $(VAR_A)"
-	@echo "VAR_B: $(VAR_B)"
-	@echo "VAR_C: $(VAR_C)"
+	@printf "VAR_A: $(VAR_A)\n"
+	@printf "VAR_B: $(VAR_B)\n"
+	@printf "VAR_C: $(VAR_C)\n"

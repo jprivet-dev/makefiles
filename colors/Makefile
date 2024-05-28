@@ -44,8 +44,8 @@ help: ## Print self-documented Makefile
 
 .PHONY: colors
 colors: ## Show colors
-	@echo -e "Part of $(BLUE)the sentence in blue$(RESET), then reset."
-	@echo -e "Part of $(GREEN)the sentence in green$(RESET), then reset."
-	@echo -e "Part of $(RED)the sentence in red$(RESET), then reset."
-	@echo -e "Part of $(YELLOW)the sentence in yellow$(RESET), then reset."
-	@echo -e "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset."
+	@printf "Part of $(BLUE)the sentence in blue$(RESET), then reset.\n"
+	@printf "Part of $(GREEN)the sentence in green$(RESET), then reset.\n"
+	@printf "Part of $(RED)the sentence in red$(RESET), then reset.\n"
+	@printf "Part of $(YELLOW)the sentence in yellow$(RESET), then reset.\n"
+	@printf "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset.\n"
