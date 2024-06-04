@@ -90,6 +90,25 @@ else
 	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
 endif
 
+##
+
+.PHONY: git_hooks_on
+git_hooks_on: ## Use the hooks directory of this project
+	git config core.hooksPath hooks/
+	sudo chmod +x hooks/*
+
+.PHONY: git_hooks_off
+git_hooks_off: ## Use the default hooks directory of Git
+	git config --unset core.hooksPath
+
+.PHONY: git_hooks_pre_commit
+git_hooks_pre_commit: ## Actions on pre-commit
+	@printf "$(YELLOW)Actions on pre-commit.\n$(RESET)"
+
+.PHONY: git_hooks_pre_push
+git_hooks_pre_push: ## Actions on pre-push
+	@printf "$(YELLOW)Actions on pre-push.\n$(RESET)"
+
 # Pending...
 
 .PHONY: __git_exists
