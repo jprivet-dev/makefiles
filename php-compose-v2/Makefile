@@ -101,7 +101,7 @@ docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 ## — PHP 🐘 ———————————————————————————————————————————————————————————————————
 
 .PHONY: php
-php: ## Run PHP. Arguments: p (php params). Example: $ make php p="--help"
+php: ## Run PHP - $ make php [p=<params>]
 	@$(eval p ?=)
 	$(PHP) $(p)
 
@@ -131,4 +131,6 @@ vars: ## Show variables
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@$(eval yes_by_default ?=) # Default ‘yes’ answer
+	@if [ "$${yes_by_default}" == "true" ]; then exit 0; fi; \
+	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]

@@ -61,7 +61,7 @@ versions: composer_version ## Display all versions of the libraries available in
 ## — COMPOSER 🧙 ——————————————————————————————————————————————————————————————
 
 .PHONY: composer
-composer: ## Run composer. Arguments: p (composer params). Example: $ make composer p="require --dev phpunit/phpunit"
+composer: ## Run composer - $ make composer [p=<param>] - Example: $ make composer p="require --dev phpunit/phpunit"
 	@$(eval p ?=)
 	$(COMPOSER) $(p)
 
@@ -108,19 +108,18 @@ vendor: composer.json ## Check if vendor is up to date with the latest changes i
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
-confirm: ## Display a confirmation before executing a makefile command. Arguments: question [make_yes] [make_no] [no_interaction]. Example: @$(MAKE) -s confirm question="Are you sure?" make_yes="command_on_yes" make_no="command_on_no"
+confirm: ## Display a confirmation before executing a makefile command - $ make confirm question=<question> [make_yes=<command>] [make_no=<command>] [yes_by_default=<bool>]
 	@$(if $(question),, $(error question argument is required))   # Question to display
 	@$(eval make_yes ?=)                                          # Makefile commands to execute on yes
 	@$(eval make_no ?=)                                           # Makefile commands to execute on no
-	@$(eval no_interaction ?=)                                    # Do not ask any interactive question
+	@$(eval yes_by_default ?=)                                    # Default ‘yes’ answer
 	@\
 	question=$${question:-"Confirm?"}; \
-	if [ "$${no_interaction}" != "true" ]; then \
-		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
-		read answer; \
+	if [ "$${yes_by_default}" != "true" ]; then \
+		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer; \
 	fi; \
 	answer=$${answer:-N}; \
-	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
+	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${yes_by_default}" = "true" ]; then \
 		[ -z "$$make_yes" ] && printf "$(YELLOW)(YES) no action!$(RESET)\n" || $(MAKE) -s $$make_yes; \
 	else \
 		[ -z "$$make_no" ] && printf "$(YELLOW)(NO) no action!$(RESET)\n" || $(MAKE) -s $$make_no; \
@@ -128,4 +127,7 @@ confirm: ## Display a confirmation before executing a makefile command. Argument
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@$(eval yes_by_default ?=) # Default ‘yes’ answer
+	@if [ "$${yes_by_default}" == "true" ]; then exit 0; fi; \
+	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+

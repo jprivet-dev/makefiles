@@ -13,6 +13,6 @@ Yes, I do!
 ```
 
 ```
-$ make do_you_want no_interaction="true"
+$ make do_you_want yes_by_default=true
 Yes, I do!
 ```

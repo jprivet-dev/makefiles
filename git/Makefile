@@ -82,7 +82,7 @@ git_current: ## Show the current branch
 	@printf "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)\n"
 
 .PHONY: git_exists
-git_exists: ## Check if a branch exists. Arguments: branch. Example: $ make git_exists branch=main)
+git_exists: ## Check if a branch exists - $ make git_exists branch=<branch>
 	@$(if $(branch),, $(error branch argument is required))
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
 	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
