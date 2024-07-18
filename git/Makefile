@@ -93,13 +93,14 @@ endif
 ##
 
 .PHONY: git_hooks_on
-git_hooks_on: ## Use the hooks directory of this project
+git_hooks_on: .git ## Use the hooks directory of this project
 	git config core.hooksPath hooks/
-	sudo chmod +x hooks/*
+	sudo chmod +x hooks/* # 755
 
 .PHONY: git_hooks_off
 git_hooks_off: ## Use the default hooks directory of Git
 	git config --unset core.hooksPath
+	sudo chmod 644 hooks/*
 
 .PHONY: git_hooks_pre_commit
 git_hooks_pre_commit: ## Actions on pre-commit
@@ -109,16 +110,9 @@ git_hooks_pre_commit: ## Actions on pre-commit
 git_hooks_pre_push: ## Actions on pre-push
 	@printf "$(YELLOW)Actions on pre-push.\n$(RESET)"
 
-# Pending...
+## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
-.PHONY: __git_exists
-__git_exists: # TODO: Do not work. The `main` default value is not returned in the `git rev-parse` command and the `ifeq` condition
-	@$(eval branch ?= main)
-ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
-else
-	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
-endif
+# Pending...
 
 .PHONY: __git_exists_bis
 __git_exists_bis: # TODO: Works very well, with a default value
@@ -126,3 +120,13 @@ __git_exists_bis: # TODO: Works very well, with a default value
 	[ "$${exists}" = "" ] \
 		&& printf "$(RED)⨯$(RESET) The $${branch} branch does not exist.\n" \
 		|| printf "$(GREEN)✓$(RESET) The $${branch} branch exists.\n";
+
+.PHONY: _git_exists_ko
+_git_exists_ko: # TODO: Do not work. The `main` default value is not returned in the `git rev-parse` command and the `ifeq` condition
+	@$(eval branch ?= main)
+ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
+	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
+else
+	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
+endif
+

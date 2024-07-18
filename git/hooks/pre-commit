@@ -11,7 +11,7 @@ TITLE="GIT HOOK PRE-COMMIT"
 
 printf "${YELLOW}>\n> ${TITLE}\n>\n${RESET}"
 
-make git_hook_pre_commit
+make git_hooks_pre_commit
 
 if [ $? -eq 0 ]; then
   printf "${GREEN}>\n> ${TITLE}: Everything is OK\n>\n${RESET}"

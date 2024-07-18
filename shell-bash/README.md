@@ -2,8 +2,6 @@
 
 ## Tests all
 
-## Tests
-
 ```shell
 make hello_1; \
 make hello_1 name=Michel; \
