@@ -1,4 +1,15 @@
 #
+# COLORS
+#
+
+RESET     = "\\033[0m"
+BLUE      = "\\033[34m"
+GREEN     = "\\033[32m"
+RED       = "\\033[31m"
+YELLOW    = "\\033[33m"
+UNDERLINE = "\\033[4m"
+
+#
 # EXECUTABLES (LOCAL)
 #
 
@@ -20,17 +31,6 @@ $(error No dockerized or local PHP interpreter)
 endif
 
 PHP = $(CONTAINER_PHP) php
-
-#
-# COLORS
-#
-
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
 
 ## — 🎵 🐘 THE PHP DOCKER MAKEFILE 🐘 🎵 ——————————————————————————————————————
 
@@ -66,35 +66,35 @@ help: ## Print self-documented Makefile
 ## — PROJECT 🚀 ———————————————————————————————————————————————————————————————
 
 .PHONY: start
-start: dc_up_d info ## Start the project (implies detached mode)
+start: up_d info ## Start the project (implies detached mode)
 
 .PHONY: stop
-stop: dc_down ## Stop the project
+stop: down ## Stop the project
 
 .PHONY: info
 info: ## Show info
-	@printf "Go on $(GREEN)http://0.0.0.0:8000/$(RESET)"
+	@printf "Go on $(GREEN)http://0.0.0.0:8000/$(RESET)\n"
 
 ## — DOCKER 🐳 ————————————————————————————————————————————————————————————————
 
-.PHONY: dc_up
-dc_up: ## Start the container
+.PHONY: up
+up: ## Start the container
 	$(DOCKER_COMPOSE) up
 
-.PHONY: dc_up_d
-dc_up_d: ## Start the container (wait for services to be running|healthy - detached mode)
+.PHONY: up_d
+up_d: ## Start the container (wait for services to be running|healthy - detached mode)
 	$(DOCKER_COMPOSE) up --remove-orphans --wait
 
-.PHONY: dc_down
-dc_down: ## Stop the container
+.PHONY: down
+down: ## Stop the container
 	$(DOCKER_COMPOSE) down
 
-.PHONY: dc_build
-dc_build: ## Build or rebuild services
+.PHONY: build
+build: ## Build or rebuild services
 	$(DOCKER_COMPOSE) build
 
-.PHONY: dc_logs
-dc_logs: ## See the container’s logs
+.PHONY: logs
+logs: ## See the container’s logs
 	$(DOCKER_COMPOSE) logs -f
 
 ##

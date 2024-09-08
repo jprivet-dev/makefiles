@@ -1,4 +1,15 @@
 #
+# COLORS
+#
+
+RESET     = "\\033[0m"
+BLUE      = "\\033[34m"
+GREEN     = "\\033[32m"
+RED       = "\\033[31m"
+YELLOW    = "\\033[33m"
+UNDERLINE = "\\033[4m"
+
+#
 # EXECUTABLES (LOCAL)
 #
 
@@ -11,17 +22,6 @@ endif
 EXEC          = docker compose exec
 CONTAINER_PHP = $(EXEC) php
 PHP           = $(CONTAINER_PHP) php
-
-#
-# COLORS
-#
-
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
 
 ## — 🎵 🐘 THE PHP DOCKER MAKEFILE 🐘 🎵 ——————————————————————————————————————
 
@@ -57,10 +57,10 @@ help: ## Print self-documented Makefile
 ## — PROJECT 🚀 ———————————————————————————————————————————————————————————————
 
 .PHONY: start
-start: dc_up_d info ## Start the project (implies detached mode)
+start: up_d info ## Start the project (implies detached mode)
 
 .PHONY: stop
-stop: dc_down ## Stop the project
+stop: down ## Stop the project
 
 .PHONY: info
 info: ## Show info
@@ -68,24 +68,24 @@ info: ## Show info
 
 ## — DOCKER 🐳 ————————————————————————————————————————————————————————————————
 
-.PHONY: dc_up
-dc_up: ## Start the container
+.PHONY: up
+up: ## Start the container
 	docker compose up
 
-.PHONY: dc_up_d
-dc_up_d: ## Start the container (wait for services to be running|healthy - detached mode)
+.PHONY: up_d
+up_d: ## Start the container (wait for services to be running|healthy - detached mode)
 	docker compose up --remove-orphans --wait
 
-.PHONY: dc_down
-dc_down: ## Stop the container
+.PHONY: down
+down: ## Stop the container
 	docker compose down
 
-.PHONY: dc_build
-dc_build: ## Build or rebuild services
+.PHONY: build
+build: ## Build or rebuild services
 	docker compose build
 
-.PHONY: dc_logs
-dc_logs: ## See the container’s logs
+.PHONY: logs
+logs: ## See the container’s logs
 	docker compose logs -f
 
 ##
@@ -97,25 +97,6 @@ docker_stop_all: confirm_continue ## Stop all running containers [y/N]
 .PHONY: docker_remove_all
 docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 	docker rm $$(docker ps -a -q)
-
-## — PHP 🐘 ———————————————————————————————————————————————————————————————————
-
-.PHONY: php
-php: ## Run PHP - $ make php [p=<params>]
-	@$(eval p ?=)
-	$(PHP) $(p)
-
-.PHONY: php_sh
-php_sh: ## Connect to the PHP container
-	$(CONTAINER_PHP) sh
-
-.PHONY: php_version
-php_version: ## PHP version number
-	$(PHP) -v
-
-.PHONY: php_modules
-php_modules: ## Show compiled in modules
-	$(PHP) -m
 
 ## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
 

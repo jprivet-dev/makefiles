@@ -1,4 +1,15 @@
 #
+# COLORS
+#
+
+RESET     = "\\033[0m"
+BLUE      = "\\033[34m"
+GREEN     = "\\033[32m"
+RED       = "\\033[31m"
+YELLOW    = "\\033[33m"
+UNDERLINE = "\\033[4m"
+
+#
 # EXECUTABLES (LOCAL)
 #
 
@@ -13,17 +24,6 @@ GIT_VERSION := $(shell git version 2> /dev/null)
 ifndef GIT_VERSION
 $(error Git is required but is not available on your system)
 endif
-
-#
-# COLORS
-#
-
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
 
 ## — 👾 🐙 THE GITHUB CLI & GIT MAKEFILE 🐙 👾 ————————————————————————————————
 

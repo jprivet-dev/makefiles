@@ -1,11 +1,4 @@
 #
-# EXECUTABLES (LOCAL)
-#
-
-# Use directly composer or the dockerized version.
-COMPOSER = composer
-
-#
 # COLORS
 #
 
@@ -15,6 +8,13 @@ GREEN     = "\\033[32m"
 RED       = "\\033[31m"
 YELLOW    = "\\033[33m"
 UNDERLINE = "\\033[4m"
+
+#
+# EXECUTABLES (LOCAL)
+#
+
+# Use directly composer or the dockerized version.
+COMPOSER = composer
 
 ## — 🎵 🚀 THE COMPOSER MAKEFILE 🚀 🎵 ————————————————————————————————————————
 

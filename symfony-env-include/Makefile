@@ -1,4 +1,15 @@
 #
+# COLORS
+#
+
+RESET     = "\\033[0m"
+BLUE      = "\\033[34m"
+GREEN     = "\\033[32m"
+RED       = "\\033[31m"
+YELLOW    = "\\033[33m"
+UNDERLINE = "\\033[4m"
+
+#
 # SYMFONY ENVIRONMENT VARIABLES
 #
 
@@ -32,17 +43,6 @@ ifneq ($(wildcard .env.local.php),)
 $(info Warning: It is not possible to use variables from .env.local.php file)
 $(info Warning: The final APP_ENV of that Makefile may be different from the APP_ENV of .env.local.php)
 endif
-
-#
-# COLORS
-#
-
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
 
 ## — 🎵 🛠️  THE SYMFONY ENV MAKEFILE 🛠️  🎵 —————————————————————————————————————
 
