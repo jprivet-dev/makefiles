@@ -18,12 +18,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -50,11 +48,11 @@ do_you_want: ## Do you want? [y/N]
 
 .PHONY: _internal_yes_i_do
 _internal_yes_i_do: # Yes, I do! INTERNAL
-	@echo "$(BLUE)Yes, I do!$(RESET)"
+	@printf "$(BLUE)Yes, I do!$(RESET)\n"
 
 .PHONY: _internal_no_i_don_t
 _internal_no_i_don_t: # No, I don't! INTERNAL
-	@echo "$(RED)No, I don't!$(RESET)"
+	@printf "$(RED)No, I don't!$(RESET)\n"
 
 .PHONY: do_you_want_yes_action
 do_you_want_yes_action: ## Do you want? ('yes' action) [y/N]
@@ -64,45 +62,54 @@ do_you_want_yes_action: ## Do you want? ('yes' action) [y/N]
 do_you_want_no_action: ## Do you want? ('no' action) [y/N]
 	@$(MAKE) -s confirm question="Do you want? ('no' action)" make_no="_internal_no_i_don_t"
 
-.PHONY: do_you_want_no_interaction
-do_you_want_no_interaction: ## Do you want? (no interaction)
-	@$(MAKE) -s do_you_want no_interaction="true"
+.PHONY: do_you_want_yes_by_default
+do_you_want_yes_by_default: ## Do you want? (no interaction)
+	@$(MAKE) -s do_you_want yes_by_default="true"
 
 ##
 
 .PHONY: do_you_want_to_continue
 do_you_want_to_continue: confirm_continue ## Do you want to continue? [y/N]
-	@echo "$(YELLOW)Yes, we continue!$(RESET)"
+	@printf "$(YELLOW)Yes, we continue!$(RESET)\n"
 
+##
+
+.PHONY: multi_steps
+multi_steps: do_you_want_to_continue do_you_want ## Multi steps
+
+.PHONY: multi_steps_yes_by_default
+multi_steps_yes_by_default: ## Multi steps
+	$(MAKE) -s multi_steps yes_by_default=true
 ##
 
 .PHONY: choose_between_yes_or_no
 choose_between_yes_or_no: ## Choose between yes or no [y/N]
-	@echo -n "$(GREEN)Choose between yes or no$(RESET) [$(YELLOW)y/N$(RESET)]: "; read answer; answer=$${answer:-N}; \
+	@printf "$(GREEN)Choose between yes or no$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ]; then $(MAKE) -s _internal_yes_i_do; \
 	else $(MAKE) -s _internal_no_i_don_t; fi
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
-confirm: ## Display a confirmation before executing a makefile command. Arguments: question [make_yes] [make_no] [no_interaction]. Example: @$(MAKE) -s confirm question="Are you sure?" make_yes="command_on_yes" make_no="command_on_no"
+confirm: ## Display a confirmation before executing a makefile command - $ make confirm question=<question> [make_yes=<command>] [make_no=<command>] [yes_by_default=<bool>]
 	@$(if $(question),, $(error question argument is required))   # Question to display
 	@$(eval make_yes ?=)                                          # Makefile commands to execute on yes
 	@$(eval make_no ?=)                                           # Makefile commands to execute on no
-	@$(eval no_interaction ?=)                                    # Do not ask any interactive question
+	@$(eval yes_by_default ?=)                                    # Default ‘yes’ answer
 	@\
 	question=$${question:-"Confirm?"}; \
-	if [ "$${no_interaction}" != "true" ]; then \
-		echo -n "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
-		read answer; \
+	if [ "$${yes_by_default}" != "true" ]; then \
+		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer; \
 	fi; \
 	answer=$${answer:-N}; \
-	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
-		[ -z "$$make_yes" ] && echo "$(YELLOW)(YES) no action!$(RESET)" || $(MAKE) -s $$make_yes; \
+	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${yes_by_default}" = "true" ]; then \
+		[ -z "$$make_yes" ] && printf "$(YELLOW)(YES) no action!$(RESET)\n" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && echo "$(YELLOW)(NO) no action!$(RESET)" || $(MAKE) -s $$make_no; \
+		[ -z "$$make_no" ] && printf "$(YELLOW)(NO) no action!$(RESET)\n" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@echo -n "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@$(eval yes_by_default ?=) # Default ‘yes’ answer
+	@if [ "$${yes_by_default}" = "true" ]; then exit 0; fi; \
+	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]

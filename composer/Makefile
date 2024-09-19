@@ -1,11 +1,4 @@
 #
-# EXECUTABLES (LOCAL)
-#
-
-# Use directly composer or the dockerized version.
-COMPOSER = composer
-
-#
 # COLORS
 #
 
@@ -16,6 +9,13 @@ RED       = "\\033[31m"
 YELLOW    = "\\033[33m"
 UNDERLINE = "\\033[4m"
 
+#
+# EXECUTABLES (LOCAL)
+#
+
+# Use directly composer or the dockerized version.
+COMPOSER = composer
+
 ## — 🎵 🚀 THE COMPOSER MAKEFILE 🚀 🎵 ————————————————————————————————————————
 
 # Print self-documented Makefile:
@@ -25,12 +25,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -63,7 +61,7 @@ versions: composer_version ## Display all versions of the libraries available in
 ## — COMPOSER 🧙 ——————————————————————————————————————————————————————————————
 
 .PHONY: composer
-composer: ## Run composer. Arguments: p (composer params). Example: $ make composer p="require --dev phpunit/phpunit"
+composer: ## Run composer - $ make composer [p=<param>] - Example: $ make composer p="require --dev phpunit/phpunit"
 	@$(eval p ?=)
 	$(COMPOSER) $(p)
 
@@ -83,6 +81,7 @@ composer_clean: confirm_continue ## Remove vendor & composer.lock [y/N]
 
 .PHONY: composer_install
 composer_install: vendor composer.lock ## Install packages using composer
+	$(COMPOSER) install
 
 .PHONY: composer_install@prod
 composer_install@prod: ## Install packages using composer (PROD)
@@ -99,34 +98,36 @@ composer_update@prod: ## Update packages using composer (PROD)
 ##
 
 composer.lock: composer.json ## Check if the composer.lock is up to date with the latest changes in composer.json (run 'composer update') [y/N]
-	@echo "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)"
+	@printf "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)\n"
 	@$(MAKE) -s confirm question="Run 'composer update'?" make_yes="composer_update"
 
 vendor: composer.json ## Check if vendor is up to date with the latest changes in composer.json (run 'composer install')
-	@echo "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)"
+	@printf "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)\n"
 	$(COMPOSER) install
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 .PHONY: confirm
-confirm: ## Display a confirmation before executing a makefile command. Arguments: question [make_yes] [make_no] [no_interaction]. Example: @$(MAKE) -s confirm question="Are you sure?" make_yes="command_on_yes" make_no="command_on_no"
+confirm: ## Display a confirmation before executing a makefile command - $ make confirm question=<question> [make_yes=<command>] [make_no=<command>] [yes_by_default=<bool>]
 	@$(if $(question),, $(error question argument is required))   # Question to display
 	@$(eval make_yes ?=)                                          # Makefile commands to execute on yes
 	@$(eval make_no ?=)                                           # Makefile commands to execute on no
-	@$(eval no_interaction ?=)                                    # Do not ask any interactive question
+	@$(eval yes_by_default ?=)                                    # Default ‘yes’ answer
 	@\
 	question=$${question:-"Confirm?"}; \
-	if [ "$${no_interaction}" != "true" ]; then \
-		echo -n "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: "; \
-		read answer; \
+	if [ "$${yes_by_default}" != "true" ]; then \
+		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer; \
 	fi; \
 	answer=$${answer:-N}; \
-	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${no_interaction}" = "true" ]; then \
-		[ -z "$$make_yes" ] && echo "$(YELLOW)(YES) no action!$(RESET)" || $(MAKE) -s $$make_yes; \
+	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${yes_by_default}" = "true" ]; then \
+		[ -z "$$make_yes" ] && printf "$(YELLOW)(YES) no action!$(RESET)\n" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && echo "$(YELLOW)(NO) no action!$(RESET)" || $(MAKE) -s $$make_no; \
+		[ -z "$$make_no" ] && printf "$(YELLOW)(NO) no action!$(RESET)\n" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
-	@echo -n "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	@$(eval yes_by_default ?=) # Default ‘yes’ answer
+	@if [ "$${yes_by_default}" = "true" ]; then exit 0; fi; \
+	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+

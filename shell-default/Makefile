@@ -18,12 +18,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -45,39 +43,44 @@ help: ## Print self-documented Makefile
 ## — HELLO 🖖 —————————————————————————————————————————————————————————————————
 
 .PHONY: hello_1
-hello_1: ## Arguments: [name]. Example: $ make hello_1 name=Michel
-	@[ "$(name)" = "" ] && echo "$(BLUE)(1) Hello World!$(RESET)" || echo "$(YELLOW)(1) Hello $(name)!$(RESET)"
+hello_1: ## $ make hello_1 [name=<name>]
+	@[ "$(name)" = "" ] && printf "$(BLUE)(1) Hello World!$(RESET)\n" || printf "$(YELLOW)(1) Hello $(name)!$(RESET)\n"
 
 .PHONY: hello_2
-hello_2: ## Arguments: [name]. Example: $ make hello_2 name=Michel
+hello_2: ## make hello_2 [name=<name>]
 	@if [ "$(name)" = "" ]; \
 	then \
-		echo "$(BLUE)(2) Hello World!$(RESET)"; \
+		printf "$(BLUE)(2) Hello World!$(RESET)\n"; \
 	else \
-		echo "$(YELLOW)(2) Hello $(name)!$(RESET)"; \
+		printf "$(YELLOW)(2) Hello $(name)!$(RESET)\n"; \
 	fi
 
 .PHONY: hello_3
-hello_3: ## Arguments: [name]. Example: $ make hello_3 name=Michel
+hello_3: ## $ make hello_3 [name=<name>]
 	@name=$${name:-"World"}; \
-	echo "$(GREEN)(3) Hello $${name}!$(RESET)"
+	printf "$(GREEN)(3) Hello $${name}!$(RESET)\n"
 
 .PHONY: hello_4
 # @see https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html
-hello_4: ## Arguments: [name]. Example: $ make hello_4 name=Michel
-	@$(if $(name), echo "$(YELLOW)(4) Hello $(name)!$(RESET)", echo "$(BLUE)(4) Hello World!$(RESET)")
+hello_4: ## $ make hello_4 [name=<name>]
+	@$(if $(name), printf "$(YELLOW)(4) Hello $(name)!$(RESET)\n", printf "$(BLUE)(4) Hello World!$(RESET)\n")
 
 .PHONY: hello_5
-hello_5: ## Arguments: [name]. Example: $ make hello_5 name=Michel
+hello_5: ## $ make hello_5 [name=<name>]
 ifeq ($(name),)
-	@echo "$(BLUE)(5) Hello World!$(RESET)"
+	@printf "$(BLUE)(5) Hello World!$(RESET)\n"
 else
-	@echo "$(YELLOW)(5) Hello $(name)!$(RESET)"
+	@printf "$(YELLOW)(5) Hello $(name)!$(RESET)\n"
 endif
 
 .PHONY: hello_6
-hello_6: ## Arguments: [name]. Example: $ make hello_6 name=Michel
+hello_6: ## $ make hello_6 [name=<name>]
 	@$(eval name ?= World)
-	@echo "$(GREEN)(6) Hello $(name)!$(RESET)"
+	@printf "$(GREEN)(6) Hello $(name)!$(RESET)\n"
 
+## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
+
+.PHONY: shell
+shell: ## Show the program used as the shell in that Makefile
+	@printf "SHELL: $(GREEN)$(SHELL)$(RESET)\n"
 

@@ -22,13 +22,11 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile help \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
-			targets=line[1]; \
+			targets=line[2]; \
 			description=$$2; \
 			if (targets == "##") { \
 				# --- space --- \
@@ -49,20 +47,25 @@ help: ## Print self-documented Makefile
 ## — HELLO 🖖 —————————————————————————————————————————————————————————————————
 
 .PHONY: hello_1
-hello_1: ## Arguments: [name]. Example: $ make hello_1 name=Michel
-	@[ "$(name)" == "" ] && echo -e "$(BLUE)(1) Hello World!$(RESET)" || echo -e "$(YELLOW)(1) Hello $(name)!$(RESET)"
+hello_1: ## $ make hello_1 [name=<name>]
+	@[ "$(name)" == "" ] && printf "$(BLUE)(1) Hello World!$(RESET)\n" || printf "$(YELLOW)(1) Hello $(name)!$(RESET)\n"
 
 .PHONY: hello_2
-hello_2: ## Arguments: [name]. Example: $ make hello_2 name=Michel
+hello_2: ## $ make hello_2 [name=<name>]
 	@if [ "$(name)" == "" ]; \
 	then \
-		echo -e "$(BLUE)(2) Hello World!$(RESET)"; \
+		printf "$(BLUE)(2) Hello World!$(RESET)\n"; \
 	else \
-		echo -e "$(YELLOW)(2) Hello $(name)!$(RESET)"; \
+		printf "$(YELLOW)(2) Hello $(name)!$(RESET)\n"; \
 	fi
 
 .PHONY: hello_3
-hello_3: ## Arguments: [name]. Example: $ make hello_3 name=Michel
+hello_3: ## $ make hello_3 [name=<name>]
 	@$(eval name ?= World)
-	@echo -e "$(GREEN)(3) Hello $(name)!$(RESET)"
+	@printf "$(GREEN)(3) Hello $(name)!$(RESET)\n"
 
+## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
+
+.PHONY: shell
+shell: ## Show the program used as the shell in that Makefile
+	@printf "SHELL: $(GREEN)$(SHELL)$(RESET)\n"

@@ -1,4 +1,15 @@
 #
+# COLORS
+#
+
+RESET     = "\\033[0m"
+BLUE      = "\\033[34m"
+GREEN     = "\\033[32m"
+RED       = "\\033[31m"
+YELLOW    = "\\033[33m"
+UNDERLINE = "\\033[4m"
+
+#
 # EXECUTABLES (LOCAL)
 #
 
@@ -14,17 +25,6 @@ ifndef GIT_VERSION
 $(error Git is required but is not available on your system)
 endif
 
-#
-# COLORS
-#
-
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
-
 ## — 👾 🐙 THE GITHUB CLI & GIT MAKEFILE 🐙 👾 ————————————————————————————————
 
 # Print self-documented Makefile:
@@ -34,12 +34,10 @@ UNDERLINE = "\\033[4m"
 .DEFAULT_GOAL = help
 .PHONY: help
 help: ## Print self-documented Makefile
-	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' $(MAKEFILE_LIST) \
+	@grep -E '(^[.a-zA-Z_-]+[^:]+:.*##.*?$$)|(^#{2})' Makefile \
 	| awk 'BEGIN {FS = "## "}; \
 		{ \
 			split($$1, line, ":"); \
-			# If you import a file in this Makefile (e.g.: include .env), line[1] is given the name of the current Makefile. \
-			# You need to use targets=line[2] instead of targets=line[1]. \
 			targets=line[1]; \
 			description=$$2; \
 			if (targets == "##") { \
@@ -77,35 +75,58 @@ git_version: ## Git version
 
 .PHONY: git_main
 git_main: ## Show the name of the main branch
-	@echo "$(YELLOW)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(RESET)"
+	@printf "$(YELLOW)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(RESET)\n"
 
 .PHONY: git_current
 git_current: ## Show the current branch
-	@echo "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)"
+	@printf "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)\n"
 
 .PHONY: git_exists
-git_exists: ## Check if a branch exists. Arguments: branch. Example: $ make git_exists branch=main)
+git_exists: ## Check if a branch exists - $ make git_exists branch=<branch>
 	@$(if $(branch),, $(error branch argument is required))
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@echo "$(RED)⨯$(RESET) The $(branch) branch does not exist."
+	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
 else
-	@echo "$(GREEN)✓$(RESET) The $(branch) branch exists."
+	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
 endif
+
+##
+
+.PHONY: git_hooks_on
+git_hooks_on: .git ## Use the hooks directory of this project
+	git config core.hooksPath hooks/
+	sudo chmod +x hooks/* # 755
+
+.PHONY: git_hooks_off
+git_hooks_off: ## Use the default hooks directory of Git
+	git config --unset core.hooksPath
+	sudo chmod 644 hooks/*
+
+.PHONY: git_hooks_pre_commit
+git_hooks_pre_commit: ## Actions on pre-commit
+	@printf "$(YELLOW)Actions on pre-commit.\n$(RESET)"
+
+.PHONY: git_hooks_pre_push
+git_hooks_pre_push: ## Actions on pre-push
+	@printf "$(YELLOW)Actions on pre-push.\n$(RESET)"
+
+## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
 # Pending...
-
-.PHONY: __git_exists
-__git_exists: # TODO: Do not work. The `main` default value is not returned in the `git rev-parse` command and the `ifeq` condition
-	@$(eval branch ?= main)
-ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@echo "$(RED)⨯$(RESET) The $(branch) branch does not exist."
-else
-	@echo "$(GREEN)✓$(RESET) The $(branch) branch exists."
-endif
 
 .PHONY: __git_exists_bis
 __git_exists_bis: # TODO: Works very well, with a default value
 	@branch=$${branch:-"main"}; exists=$$(git rev-parse --verify $${branch} 2>/dev/null); \
 	[ "$${exists}" = "" ] \
-		&& echo "$(RED)⨯$(RESET) The $${branch} branch does not exist." \
-		|| echo "$(GREEN)✓$(RESET) The $${branch} branch exists.";
+		&& printf "$(RED)⨯$(RESET) The $${branch} branch does not exist.\n" \
+		|| printf "$(GREEN)✓$(RESET) The $${branch} branch exists.\n";
+
+.PHONY: _git_exists_ko
+_git_exists_ko: # TODO: Do not work. The `main` default value is not returned in the `git rev-parse` command and the `ifeq` condition
+	@$(eval branch ?= main)
+ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
+	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
+else
+	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
+endif
+

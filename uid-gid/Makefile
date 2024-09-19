@@ -1,15 +1,4 @@
-#
-# COLORS
-#
-
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
-
-## — 🎵 🖌️  THE COLOR MAKEFILE 🖌️  🎵 ———————————————————————————————————————————
+## — 🎵 🚀 UID & GID 🚀 🎵 ————————————————————————————————————————————————————
 
 # Print self-documented Makefile:
 # $ make
@@ -42,10 +31,11 @@ help: ## Print self-documented Makefile
 
 ## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
 
-.PHONY: colors
-colors: ## Show colors
-	@printf "Part of $(BLUE)the sentence in blue$(RESET), then reset.\n"
-	@printf "Part of $(GREEN)the sentence in green$(RESET), then reset.\n"
-	@printf "Part of $(RED)the sentence in red$(RESET), then reset.\n"
-	@printf "Part of $(YELLOW)the sentence in yellow$(RESET), then reset.\n"
-	@printf "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset.\n"
+.PHONY: id
+id: ## Show UID & GID
+	@printf "UID: $(shell id -u) - GID: $(shell id -g)\n"
+
+.PHONY: id_bis
+id_bis: ## Show UID & GID (see https://askubuntu.com/questions/1124674/why-is-my-gid-environment-variable-empty)
+	@printf "UID: $(shell echo $$UID) - GID: $(shell echo $$GID)\n"
+

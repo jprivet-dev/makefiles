@@ -38,19 +38,37 @@ target: dependencies
 
 ## Technical choices
 
-### snack_case vs kebab-case
+### `snack_case` vs `kebab-case`
 
-I prefer to use the snack_case format for Makefile commands, as it's easier to select an entire command with a double-click (IDE, text editor, terminal, ...), unlike the kebab-case format.
+I prefer to use the `snack_case` format for Makefile commands, as it's easier to select an entire command with a double-click (IDE, text editor, terminal, ...), unlike the `kebab-case` format.
+
+✅ Double click to select with `kebab-case` format:
 
 ```makefile
 .PHONY: my_target_a
-my_target_a: dependencies
+my_target_a: dependencies ## Description
+    command
+    command
 ```
+
+❌ Double click to select with `kebab-case` format :
 
 ```makefile
 .PHONY: my-target-a
-my-target-a: dependencies
+my-target-a: dependencies ## Description
+    command
+    command
 ```
+
+### `echo -e` vs `printf`
+
+> See https://unix.stackexchange.com/questions/65803/why-is-printf-better-than-echo
+
+To put it simply, I noticed that in the Makefiles, `echo -n` and `echo -e` did not behave identically, depending on the Linux distribution in which they were executed.
+
+On **Ubuntu**, `echo -e ...` handles colours, without forcing `SHELL:=/bin/bash`, whereas on **Oracle Linux Server** it displays the colour encoding, for example `Part of \033[34mthe sentence in blue\033[0m, then reset.`
+
+I now use `printf` exclusively...
 
 ## Resources
 

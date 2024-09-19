@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Usage:
+# $ git config core.hooksPath hooks/
+
+RESET="\033[0m"
+GREEN="\033[32m"
+RED="\033[31m"
+YELLOW="\033[33m"
+TITLE="GIT HOOK PRE-COMMIT"
+
+printf "${YELLOW}>\n> ${TITLE}\n>\n${RESET}"
+
+make git_hooks_pre_commit
+
+if [ $? -eq 0 ]; then
+  printf "${GREEN}>\n> ${TITLE}: Everything is OK\n>\n${RESET}"
+  exit 0
+fi
+
+printf "${RED}>\n> ${TITLE}: Something is wrong\n>\n${RESET}"
+exit 1
