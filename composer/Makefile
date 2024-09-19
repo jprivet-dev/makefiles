@@ -128,6 +128,6 @@ confirm: ## Display a confirmation before executing a makefile command - $ make 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
 	@$(eval yes_by_default ?=) # Default ‘yes’ answer
-	@if [ "$${yes_by_default}" == "true" ]; then exit 0; fi; \
+	@if [ "$${yes_by_default}" = "true" ]; then exit 0; fi; \
 	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
 

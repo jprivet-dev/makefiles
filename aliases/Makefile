@@ -59,7 +59,7 @@ bar: ## Bar
 ## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
 
 .PHONY: aliases
-aliases: # Auto generate aliases file
+aliases: ## Auto generate aliases
 	@>$(ALIASES)
 	@printf "\n"
 	@printf "Create $(YELLOW)$(ALIASES)$(RESET) file:\n"
