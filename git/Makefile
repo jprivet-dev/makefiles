@@ -2,12 +2,11 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+B = "\\033[34m" # BLUE
+G = "\\033[32m" # GREEN
+R = "\\033[31m" # RED
+Y = "\\033[33m" # YELLOW
+S = "\\033[0m"  # RESET
 
 #
 # EXECUTABLES (LOCAL)
@@ -75,19 +74,19 @@ git_version: ## Git version
 
 .PHONY: git_main
 git_main: ## Show the name of the main branch
-	@printf "$(YELLOW)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(RESET)\n"
+	@printf "$(Y)'$(shell basename $(shell git symbolic-ref --short refs/remotes/origin/HEAD))' is the main branch.$(S)\n"
 
 .PHONY: git_current
 git_current: ## Show the current branch
-	@printf "$(YELLOW)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(RESET)\n"
+	@printf "$(Y)'$(shell git rev-parse --abbrev-ref HEAD)' is the current branch.$(S)\n"
 
 .PHONY: git_exists
 git_exists: ## Check if a branch exists - $ make git_exists branch=<branch>
 	@$(if $(branch),, $(error branch argument is required))
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
+	@printf "$(R)⨯$(S) The $(branch) branch does not exist.\n"
 else
-	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
+	@printf "$(G)✓$(S) The $(branch) branch exists.\n"
 endif
 
 ##
@@ -104,11 +103,11 @@ git_hooks_off: ## Use the default hooks directory of Git
 
 .PHONY: git_hooks_pre_commit
 git_hooks_pre_commit: ## Actions on pre-commit
-	@printf "$(YELLOW)Actions on pre-commit.\n$(RESET)"
+	@printf "$(Y)Actions on pre-commit.\n$(S)"
 
 .PHONY: git_hooks_pre_push
 git_hooks_pre_push: ## Actions on pre-push
-	@printf "$(YELLOW)Actions on pre-push.\n$(RESET)"
+	@printf "$(Y)Actions on pre-push.\n$(S)"
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
 
@@ -118,15 +117,15 @@ git_hooks_pre_push: ## Actions on pre-push
 __git_exists_bis: # TODO: Works very well, with a default value
 	@branch=$${branch:-"main"}; exists=$$(git rev-parse --verify $${branch} 2>/dev/null); \
 	[ "$${exists}" = "" ] \
-		&& printf "$(RED)⨯$(RESET) The $${branch} branch does not exist.\n" \
-		|| printf "$(GREEN)✓$(RESET) The $${branch} branch exists.\n";
+		&& printf "$(R)⨯$(S) The $${branch} branch does not exist.\n" \
+		|| printf "$(G)✓$(S) The $${branch} branch exists.\n";
 
 .PHONY: _git_exists_ko
 _git_exists_ko: # TODO: Do not work. The `main` default value is not returned in the `git rev-parse` command and the `ifeq` condition
 	@$(eval branch ?= main)
 ifeq ($(shell git rev-parse --verify $(branch) 2>/dev/null),)
-	@printf "$(RED)⨯$(RESET) The $(branch) branch does not exist.\n"
+	@printf "$(R)⨯$(S) The $(branch) branch does not exist.\n"
 else
-	@printf "$(GREEN)✓$(RESET) The $(branch) branch exists.\n"
+	@printf "$(G)✓$(S) The $(branch) branch exists.\n"
 endif
 

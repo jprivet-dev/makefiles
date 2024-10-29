@@ -2,12 +2,11 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+B = "\\033[34m" # BLUE
+G = "\\033[32m" # GREEN
+R = "\\033[31m" # RED
+Y = "\\033[33m" # YELLOW
+S = "\\033[0m"  # RESET
 
 ## — 🎵 🚀 THE SHELL DEFAULT MAKEFILE 🚀 🎵 ———————————————————————————————————
 
@@ -44,43 +43,43 @@ help: ## Print self-documented Makefile
 
 .PHONY: hello_1
 hello_1: ## $ make hello_1 [name=<name>]
-	@[ "$(name)" = "" ] && printf "$(BLUE)(1) Hello World!$(RESET)\n" || printf "$(YELLOW)(1) Hello $(name)!$(RESET)\n"
+	@[ "$(name)" = "" ] && printf "$(B)(1) Hello World!$(S)\n" || printf "$(Y)(1) Hello $(name)!$(S)\n"
 
 .PHONY: hello_2
 hello_2: ## make hello_2 [name=<name>]
 	@if [ "$(name)" = "" ]; \
 	then \
-		printf "$(BLUE)(2) Hello World!$(RESET)\n"; \
+		printf "$(B)(2) Hello World!$(S)\n"; \
 	else \
-		printf "$(YELLOW)(2) Hello $(name)!$(RESET)\n"; \
+		printf "$(Y)(2) Hello $(name)!$(S)\n"; \
 	fi
 
 .PHONY: hello_3
 hello_3: ## $ make hello_3 [name=<name>]
 	@name=$${name:-"World"}; \
-	printf "$(GREEN)(3) Hello $${name}!$(RESET)\n"
+	printf "$(G)(3) Hello $${name}!$(S)\n"
 
 .PHONY: hello_4
 # @see https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html
 hello_4: ## $ make hello_4 [name=<name>]
-	@$(if $(name), printf "$(YELLOW)(4) Hello $(name)!$(RESET)\n", printf "$(BLUE)(4) Hello World!$(RESET)\n")
+	@$(if $(name), printf "$(Y)(4) Hello $(name)!$(S)\n", printf "$(B)(4) Hello World!$(S)\n")
 
 .PHONY: hello_5
 hello_5: ## $ make hello_5 [name=<name>]
 ifeq ($(name),)
-	@printf "$(BLUE)(5) Hello World!$(RESET)\n"
+	@printf "$(B)(5) Hello World!$(S)\n"
 else
-	@printf "$(YELLOW)(5) Hello $(name)!$(RESET)\n"
+	@printf "$(Y)(5) Hello $(name)!$(S)\n"
 endif
 
 .PHONY: hello_6
 hello_6: ## $ make hello_6 [name=<name>]
 	@$(eval name ?= World)
-	@printf "$(GREEN)(6) Hello $(name)!$(RESET)\n"
+	@printf "$(G)(6) Hello $(name)!$(S)\n"
 
 ## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
 
 .PHONY: shell
 shell: ## Show the program used as the shell in that Makefile
-	@printf "SHELL: $(GREEN)$(SHELL)$(RESET)\n"
+	@printf "SHELL: $(G)$(SHELL)$(S)\n"
 

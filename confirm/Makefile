@@ -2,12 +2,11 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+B = "\\033[34m" # BLUE
+G = "\\033[32m" # GREEN
+R = "\\033[31m" # RED
+Y = "\\033[33m" # YELLOW
+S = "\\033[0m"  # RESET
 
 ## — 🎵 🚀 THE CONFIRM MAKEFILE 🚀 🎵 —————————————————————————————————————————
 
@@ -48,11 +47,11 @@ do_you_want: ## Do you want? [y/N]
 
 .PHONY: _internal_yes_i_do
 _internal_yes_i_do: # Yes, I do! INTERNAL
-	@printf "$(BLUE)Yes, I do!$(RESET)\n"
+	@printf "$(B)Yes, I do!$(S)\n"
 
 .PHONY: _internal_no_i_don_t
 _internal_no_i_don_t: # No, I don't! INTERNAL
-	@printf "$(RED)No, I don't!$(RESET)\n"
+	@printf "$(R)No, I don't!$(S)\n"
 
 .PHONY: do_you_want_yes_action
 do_you_want_yes_action: ## Do you want? ('yes' action) [y/N]
@@ -70,7 +69,7 @@ do_you_want_yes_by_default: ## Do you want? (no interaction)
 
 .PHONY: do_you_want_to_continue
 do_you_want_to_continue: confirm_continue ## Do you want to continue? [y/N]
-	@printf "$(YELLOW)Yes, we continue!$(RESET)\n"
+	@printf "$(Y)Yes, we continue!$(S)\n"
 
 ##
 
@@ -84,7 +83,7 @@ multi_steps_yes_by_default: ## Multi steps
 
 .PHONY: choose_between_yes_or_no
 choose_between_yes_or_no: ## Choose between yes or no [y/N]
-	@printf "$(GREEN)Choose between yes or no$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && answer=$${answer:-N}; \
+	@printf "$(G)Choose between yes or no$(S) [$(Y)y/N$(S)]: " && read answer && answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ]; then $(MAKE) -s _internal_yes_i_do; \
 	else $(MAKE) -s _internal_no_i_don_t; fi
 
@@ -99,17 +98,17 @@ confirm: ## Display a confirmation before executing a makefile command - $ make 
 	@\
 	question=$${question:-"Confirm?"}; \
 	if [ "$${yes_by_default}" != "true" ]; then \
-		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer; \
+		printf "$(G)$${question}$(S) [$(Y)y/N$(S)]: " && read answer; \
 	fi; \
 	answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${yes_by_default}" = "true" ]; then \
-		[ -z "$$make_yes" ] && printf "$(YELLOW)(YES) no action!$(RESET)\n" || $(MAKE) -s $$make_yes; \
+		[ -z "$$make_yes" ] && printf "$(Y)(YES) no action!$(S)\n" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && printf "$(YELLOW)(NO) no action!$(RESET)\n" || $(MAKE) -s $$make_no; \
+		[ -z "$$make_no" ] && printf "$(Y)(NO) no action!$(S)\n" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
 	@$(eval yes_by_default ?=) # Default ‘yes’ answer
 	@if [ "$${yes_by_default}" = "true" ]; then exit 0; fi; \
-	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	printf "$(G)Do you want to continue?$(S) [$(Y)y/N$(S)]: " && read answer && [ $${answer:-N} = y ]

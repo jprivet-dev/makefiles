@@ -2,12 +2,11 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+B = "\\033[34m" # BLUE
+G = "\\033[32m" # GREEN
+R = "\\033[31m" # RED
+Y = "\\033[33m" # YELLOW
+S = "\\033[0m"  # RESET
 
 #
 # EXECUTABLES (LOCAL)
@@ -62,7 +61,7 @@ bar: ## Bar
 aliases: ## Auto generate aliases
 	@>$(ALIASES)
 	@printf "\n"
-	@printf "Create $(YELLOW)$(ALIASES)$(RESET) file:\n"
+	@printf "Create $(Y)$(ALIASES)$(S) file:\n"
 	@echo '#' >>$(ALIASES)
 	@echo '# Auto-generated aliases ($(shell date +"%Y%m%d-%H%M%S"))' >>$(ALIASES)
 	@echo '#' >>$(ALIASES)
@@ -71,4 +70,4 @@ aliases: ## Auto generate aliases
 	@echo 'printf "🎉 Auto-generated aliases loaded 🎉\\n"' >>$(ALIASES)
 	@cat $(ALIASES)
 	@printf "\n"
-	@printf "Load aliases with $(YELLOW)$$ . $(ALIASES)$(RESET)\n"
+	@printf "Load aliases with $(Y)$$ . $(ALIASES)$(S)\n"
