@@ -1,19 +1,20 @@
 # Usage:
 #   . scripts/aliases.sh [options]
 
-Y="\033[33m" # YELLOW
-G="\033[32m" # GREEN
-R="\033[0m"  # RESET
+# (G)REEN, (Y)ELLOW & RE(S)ET
+G="\033[32m"
+Y="\033[33m"
+S="\033[0m"
 
 function aliases_create() {
   local name="${1}"
-  printf "✅ Create ${G}${name}${R} alias for the ${G}make ${name}${R} command\n"
+  printf "✅ Create ${G}${name}${S} alias for the ${G}make ${name}${S} command\n"
   alias ${name}="aliases_make ${name}"
 }
 
 function aliases_delete() {
   local name="${1}"
-  printf "❌ Delete ${G}${name}${R} alias for the ${G}make ${name}${R} command\n"
+  printf "❌ Delete ${G}${name}${S} alias for the ${G}make ${name}${S} command\n"
   unalias ${name}
 }
 
@@ -25,24 +26,24 @@ function aliases_make() {
 
 function aliases_help() {
   printf "\n"
-  printf "${Y}Description:${R}\n"
+  printf "${Y}Description:${S}\n"
   printf "  Create or delete aliases for make commands\n"
   printf "\n"
-  printf "${Y}Usage:${R}\n"
+  printf "${Y}Usage:${S}\n"
   printf "  . aliases [options]\n"
   printf "\n"
-  printf "${Y}Options:${R}\n"
-  printf "  ${G}--help, -h    ${R}Show help\n"
-  printf "  ${G}--delete, -d  ${R}Delete all aliases\n"
+  printf "${Y}Options:${S}\n"
+  printf "  ${G}--help, -h    ${S}Show help\n"
+  printf "  ${G}--delete, -d  ${S}Delete all aliases\n"
   printf "\n"
-  printf "${Y}Help:${R}\n"
+  printf "${Y}Help:${S}\n"
   printf "  Create all aliases:\n"
   printf "\n"
-  printf "    ${G}. aliases${R}\n"
+  printf "    ${G}. aliases${S}\n"
   printf "\n"
   printf "  Delete all aliases:\n"
   printf "\n"
-  printf "    ${G}. aliases --delete${R}\n"
+  printf "    ${G}. aliases --delete${S}\n"
   printf "\n"
 }
 
@@ -55,8 +56,8 @@ function aliases_create_all() {
   aliases_create foo
   aliases_create bar
   printf "\n"
-  printf "Delete all aliases with ${G}. aliases --delete${R} command\n"
-  printf "Show help with ${G}. aliases --help${R} command\n"
+  printf "Delete all aliases with ${G}. aliases --delete${S} command\n"
+  printf "Show help with ${G}. aliases --help${S} command\n"
 }
 
 case ${1} in
