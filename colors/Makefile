@@ -2,12 +2,12 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+# (B)LUE, (G)REEN, (R)ED, (Y)ELLOW & RE(S)ET
+B = "\\033[34m"
+G = "\\033[32m"
+R = "\\033[31m"
+Y = "\\033[33m"
+S = "\\033[0m"
 
 ## — 🎵 🖌️  THE COLOR MAKEFILE 🖌️  🎵 ———————————————————————————————————————————
 
@@ -44,8 +44,7 @@ help: ## Print self-documented Makefile
 
 .PHONY: colors
 colors: ## Show colors
-	@printf "Part of $(BLUE)the sentence in blue$(RESET), then reset.\n"
-	@printf "Part of $(GREEN)the sentence in green$(RESET), then reset.\n"
-	@printf "Part of $(RED)the sentence in red$(RESET), then reset.\n"
-	@printf "Part of $(YELLOW)the sentence in yellow$(RESET), then reset.\n"
-	@printf "Part of $(UNDERLINE)the sentence underlined$(RESET), then reset.\n"
+	@printf "Part of $(B)the sentence in blue$(S), then reset.\n"
+	@printf "Part of $(G)the sentence in green$(S), then reset.\n"
+	@printf "Part of $(R)the sentence in red$(S), then reset.\n"
+	@printf "Part of $(Y)the sentence in yellow$(S), then reset.\n"

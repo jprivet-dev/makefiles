@@ -2,12 +2,12 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+# (B)LUE, (G)REEN, (R)ED, (Y)ELLOW & RE(S)ET
+B = "\\033[34m"
+G = "\\033[32m"
+R = "\\033[31m"
+Y = "\\033[33m"
+S = "\\033[0m"
 
 #
 # EXECUTABLES (LOCAL)
@@ -64,7 +64,7 @@ stop: down ## Stop the project
 
 .PHONY: info
 info: ## Show info
-	@printf "Go on $(GREEN)http://0.0.0.0:8000/$(RESET)\n"
+	@printf "Go on $(G)http://0.0.0.0:8000/$(S)\n"
 
 ## — DOCKER 🐳 ————————————————————————————————————————————————————————————————
 
@@ -102,7 +102,7 @@ docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 
 .PHONY: vars
 vars: ## Show variables
-	@printf "$(YELLOW)Vars:$(RESET)\n"
+	@printf "$(Y)Vars:$(S)\n"
 	@printf "COMPOSE_V2   : $(COMPOSE_V2)\n"
 	@printf "EXEC         : $(EXEC)\n"
 	@printf "CONTAINER_PHP: $(CONTAINER_PHP)\n"
@@ -114,4 +114,4 @@ PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
 	@$(eval yes_by_default ?=) # Default ‘yes’ answer
 	@if [ "$${yes_by_default}" = "true" ]; then exit 0; fi; \
-	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	printf "$(G)Do you want to continue?$(S) [$(Y)y/N$(S)]: " && read answer && [ $${answer:-N} = y ]

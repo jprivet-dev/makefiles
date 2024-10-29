@@ -2,12 +2,12 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+# (B)LUE, (G)REEN, (R)ED, (Y)ELLOW & RE(S)ET
+B = "\\033[34m"
+G = "\\033[32m"
+R = "\\033[31m"
+Y = "\\033[33m"
+S = "\\033[0m"
 
 #
 # EXECUTABLES (LOCAL)
@@ -98,11 +98,11 @@ composer_update@prod: ## Update packages using composer (PROD)
 ##
 
 composer.lock: composer.json ## Check if the composer.lock is up to date with the latest changes in composer.json (run 'composer update') [y/N]
-	@printf "$(YELLOW)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(RESET)\n"
+	@printf "$(Y)Warning: The composer.lock is not up to date with the latest changes in composer.json (run 'composer update').$(S)\n"
 	@$(MAKE) -s confirm question="Run 'composer update'?" make_yes="composer_update"
 
 vendor: composer.json ## Check if vendor is up to date with the latest changes in composer.json (run 'composer install')
-	@printf "$(YELLOW)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(RESET)\n"
+	@printf "$(Y)Warning: vendor is not up to date with the latest changes in composer.json (run 'composer install').$(S)\n"
 	$(COMPOSER) install
 
 ## — INTERNAL 🚧‍️ ——————————————————————————————————————————————————————————————
@@ -116,18 +116,18 @@ confirm: ## Display a confirmation before executing a makefile command - $ make 
 	@\
 	question=$${question:-"Confirm?"}; \
 	if [ "$${yes_by_default}" != "true" ]; then \
-		printf "$(GREEN)$${question}$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer; \
+		printf "$(G)$${question}$(S) [$(Y)y/N$(S)]: " && read answer; \
 	fi; \
 	answer=$${answer:-N}; \
 	if [ "$${answer}" = y ] || [ "$${answer}" = Y ] || [ "$${yes_by_default}" = "true" ]; then \
-		[ -z "$$make_yes" ] && printf "$(YELLOW)(YES) no action!$(RESET)\n" || $(MAKE) -s $$make_yes; \
+		[ -z "$$make_yes" ] && printf "$(Y)(YES) no action!$(S)\n" || $(MAKE) -s $$make_yes; \
 	else \
-		[ -z "$$make_no" ] && printf "$(YELLOW)(NO) no action!$(RESET)\n" || $(MAKE) -s $$make_no; \
+		[ -z "$$make_no" ] && printf "$(Y)(NO) no action!$(S)\n" || $(MAKE) -s $$make_no; \
 	fi
 
 PHONY: confirm_continue
 confirm_continue: ## Display a confirmation before continuing [y/N]
 	@$(eval yes_by_default ?=) # Default ‘yes’ answer
 	@if [ "$${yes_by_default}" = "true" ]; then exit 0; fi; \
-	printf "$(GREEN)Do you want to continue?$(RESET) [$(YELLOW)y/N$(RESET)]: " && read answer && [ $${answer:-N} = y ]
+	printf "$(G)Do you want to continue?$(S) [$(Y)y/N$(S)]: " && read answer && [ $${answer:-N} = y ]
 

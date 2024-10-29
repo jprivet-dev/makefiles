@@ -2,12 +2,12 @@
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+# (B)LUE, (G)REEN, (R)ED, (Y)ELLOW & RE(S)ET
+B = "\\033[34m"
+G = "\\033[32m"
+R = "\\033[31m"
+Y = "\\033[33m"
+S = "\\033[0m"
 
 #
 # SYMFONY ENVIRONMENT VARIABLES
@@ -79,30 +79,30 @@ help: ## Print self-documented Makefile
 
 .PHONY: vars
 vars: ## Show variables
-	@printf "$(YELLOW)Vars:$(RESET)\n"
+	@printf "$(Y)Vars:$(S)\n"
 	@printf "APP_ENV   : $(APP_ENV)\n"
 	@printf "APP_SECRET: $(APP_SECRET)\n"
 
 .PHONY: env_files
 env_files: ## Show env files loaded into that Makefile
-	@printf "$(YELLOW)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(RESET)\n"
+	@printf "$(Y)Env files loaded into that Makefile (in order of decreasing priority) [FILE_ENV=$(FILE_ENV)]:$(S)\n"
 ifneq ("$(wildcard .env.$(FILE_ENV).local)","")
-	@printf "* $(GREEN)✓$(RESET) .env.$(FILE_ENV).local\n"
+	@printf "* $(G)✓$(S) .env.$(FILE_ENV).local\n"
 else
-	@printf "* $(RED)⨯$(RESET) .env.$(FILE_ENV).local\n"
+	@printf "* $(R)⨯$(S) .env.$(FILE_ENV).local\n"
 endif
 ifneq ("$(wildcard .env.$(FILE_ENV))","")
-	@printf "* $(GREEN)✓$(RESET) .env.$(FILE_ENV)\n"
+	@printf "* $(G)✓$(S) .env.$(FILE_ENV)\n"
 else
-	@printf "* $(RED)⨯$(RESET) .env.$(FILE_ENV)\n"
+	@printf "* $(R)⨯$(S) .env.$(FILE_ENV)\n"
 endif
 ifneq ("$(wildcard .env.local)","")
-	@printf "* $(GREEN)✓$(RESET) .env.local\n"
+	@printf "* $(G)✓$(S) .env.local\n"
 else
-	@printf "* $(RED)⨯$(RESET) .env.local\n"
+	@printf "* $(R)⨯$(S) .env.local\n"
 endif
 ifneq ("$(wildcard .env)","")
-	@printf "* $(GREEN)✓$(RESET) .env\n"
+	@printf "* $(G)✓$(S) .env\n"
 else
-	@printf "* $(RED)⨯$(RESET) .env\n"
+	@printf "* $(R)⨯$(S) .env\n"
 endif

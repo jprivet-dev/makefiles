@@ -4,12 +4,12 @@ BUILT_IN_VARS := $(.VARIABLES)
 # COLORS
 #
 
-RESET     = "\\033[0m"
-BLUE      = "\\033[34m"
-GREEN     = "\\033[32m"
-RED       = "\\033[31m"
-YELLOW    = "\\033[33m"
-UNDERLINE = "\\033[4m"
+# (B)LUE, (G)REEN, (R)ED, (Y)ELLOW & RE(S)ET
+B = "\\033[34m"
+G = "\\033[32m"
+R = "\\033[31m"
+Y = "\\033[33m"
+S = "\\033[0m"
 
 #
 # OTHER VARIABLES
