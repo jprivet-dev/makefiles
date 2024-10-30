@@ -42,7 +42,7 @@ target: dependencies
 
 I prefer to use the `snack_case` format for Makefile commands, as it's easier to select an entire command with a double-click (IDE, text editor, terminal, ...), unlike the `kebab-case` format.
 
-✅ Double click to select with `kebab-case` format:
+✅ Double click to select with `snack_case` format:
 
 ```makefile
 .PHONY: my_target_a
