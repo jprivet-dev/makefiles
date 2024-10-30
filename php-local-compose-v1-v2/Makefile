@@ -75,6 +75,25 @@ stop: down ## Stop the project
 info: ## Show info
 	@printf "Go on $(G)http://0.0.0.0:8000/$(S)\n"
 
+## — PHP 🐘 ———————————————————————————————————————————————————————————————————
+
+.PHONY: php
+php: ## Run PHP - $ make php [p=<params>]
+	@$(eval p ?=)
+	$(PHP) $(p)
+
+.PHONY: php_sh
+php_sh: ## Connect to the PHP container
+	$(CONTAINER_PHP) sh
+
+.PHONY: php_version
+php_version: ## PHP version number
+	$(PHP) -v
+
+.PHONY: php_modules
+php_modules: ## Show compiled in modules
+	$(PHP) -m
+
 ## — DOCKER 🐳 ————————————————————————————————————————————————————————————————
 
 .PHONY: up
@@ -106,25 +125,6 @@ docker_stop_all: confirm_continue ## Stop all running containers [y/N]
 .PHONY: docker_remove_all
 docker_remove_all: confirm_continue ## Remove all stopped containers [y/N]
 	docker rm $$(docker ps -a -q)
-
-## — PHP 🐘 ———————————————————————————————————————————————————————————————————
-
-.PHONY: php
-php: ## Run PHP - $ make php [p=<params>]
-	@$(eval p ?=)
-	$(PHP) $(p)
-
-.PHONY: php_sh
-php_sh: ## Connect to the PHP container
-	$(CONTAINER_PHP) sh
-
-.PHONY: php_version
-php_version: ## PHP version number
-	$(PHP) -v
-
-.PHONY: php_modules
-php_modules: ## Show compiled in modules
-	$(PHP) -m
 
 ## — UTILS 🛠️  —————————————————————————————————————————————————————————————————
 
