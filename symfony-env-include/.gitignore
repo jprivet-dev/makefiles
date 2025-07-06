@@ -1,0 +1,4 @@
+# Same as Symfony .gitignore
+.env.local.php
+.env.*.local
+.env.local
